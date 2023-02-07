@@ -14,16 +14,16 @@ const Navbar: React.FC = () => {
       bg="dark"
       height="64px"
       _dark={{ bg: 'lightYellow' }}
-      padding={'6px 12px'}
+      padding={'6px 18px'}
       align="center"
       justifyContent={'space-between'}
     >
       <Flex alignItems={'center'} gap="0.5em" _dark={{ bg: 'lightYellow' }}>
-        <Image
+        {/* <Image
           src="/images/Lex-Face.png"
           height="42px"
           _dark={{ bg: 'lightYellow' }}
-        />
+        /> */}
         <Heading
           size={{ sm: 'sm', md: 'md', lg: 'lg' }}
           color={'lightYellow'}
@@ -31,7 +31,7 @@ const Navbar: React.FC = () => {
           display={{ base: 'none', sm: 'unset' }}
           whiteSpace="nowrap"
         >
-          Lex' Book Club
+          BookClub
         </Heading>
         <Library user={user} />
       </Flex>

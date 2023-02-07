@@ -52,7 +52,7 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
                 <ChevronDownIcon color={'lightyellow'} />
               </Flex>
             </MenuButton>
-            <MenuList w={{ base: '200px', sm: '300px' }}>
+            <MenuList w={{ base: '200px', sm: '300px' }} borderRadius="0%">
               <>
                 <Text userSelect={'none'} ml={2} fontWeight={'extrabold'}>
                   Currently Reading

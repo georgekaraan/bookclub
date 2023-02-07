@@ -1,5 +1,5 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { Flex, Menu, MenuItem, Icon } from '@chakra-ui/react';
+import { Text, Flex, Menu, MenuItem, Icon } from '@chakra-ui/react';
 import React from 'react';
 import { GrAdd } from 'react-icons/gr';
 import { useState } from 'react';
@@ -22,7 +22,9 @@ const BookClub: React.FC<BookClubProps> = () => {
       >
         <Flex align={'center'}>
           <Icon fontSize={20} mr={3} as={GrAdd} color="green" />
-          Add Book
+          <Text fontSize={{ base: '10pt', sm: '11pt', md: '12pt' }}>
+            Create New Book Club
+          </Text>
         </Flex>
       </MenuItem>
     </>

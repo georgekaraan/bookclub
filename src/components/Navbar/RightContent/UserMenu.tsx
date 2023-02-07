@@ -13,6 +13,7 @@ import {
 import { signOut } from 'firebase/auth';
 import React from 'react';
 import { BiLike, BiLogOut } from 'react-icons/bi';
+import { SiDarkreader } from 'react-icons/si';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { User } from 'firebase/auth';
@@ -34,7 +35,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
             />
           </Flex>
         </MenuButton>
-        <MenuList>
+        <MenuList borderRadius="0%">
           <MenuItem
             fontSize={{ base: '10pt', sm: '12pt', md: '14pt' }}
             color={'dark'}
@@ -71,12 +72,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                 _hover={{ color: 'dark' }}
                 boxSize={{ base: '24px', sm: '36px' }}
                 borderRadius={'50%'}
-                as={BsFillPersonFill}
+                as={SiDarkreader}
               />
             </>
           </Flex>
         </MenuButton>
-        <MenuList>
+        <MenuList borderRadius="0%">
           {user && (
             <>
               <Text ml={2} fontWeight={'extrabold'}>
