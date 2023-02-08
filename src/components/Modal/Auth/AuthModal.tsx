@@ -42,7 +42,11 @@ const AuthModal: React.FC = () => {
 
   return (
     <>
-      <Modal isOpen={modalState.open} onClose={handleClose}>
+      <Modal
+        isOpen={modalState.open}
+        onClose={handleClose}
+        closeOnOverlayClick={false}
+      >
         <ModalOverlay />
         <ModalContent borderRadius="0%">
           <ModalHeader textAlign={'center'}>

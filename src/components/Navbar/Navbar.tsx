@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
           _dark={{ bg: 'lightYellow' }}
         /> */}
         <Heading
-          size={{ sm: 'sm', md: 'md', lg: 'lg' }}
+          size={{ sm: 'sm', md: 'md' }}
           color={'lightYellow'}
           _dark={{ bg: 'lightYellow', color: 'dark' }}
           display={{ base: 'none', sm: 'unset' }}

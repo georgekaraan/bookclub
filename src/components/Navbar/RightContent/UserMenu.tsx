@@ -17,12 +17,20 @@ import { SiDarkreader } from 'react-icons/si';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { User } from 'firebase/auth';
+import { useResetRecoilState } from 'recoil';
+import { bookClubState } from '@/atoms/bookClubsAtom';
 
 type UserMenuProps = {
   user?: User | null;
 };
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
+  const resetBcState = useResetRecoilState(bookClubState);
+  const logout = async () => {
+    await signOut(auth);
+    resetBcState();
+  };
+
   return (
     <Flex>
       <Menu autoSelect={false}>
@@ -101,7 +109,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
             fontSize={{ base: '10pt', sm: '12pt', md: '14pt' }}
             color={'dark'}
             _hover={{ bg: 'dark', color: 'lightYellow' }}
-            onClick={() => signOut(auth)}
+            onClick={logout}
           >
             <Flex align={'center'}>
               <Icon as={BiLogOut} fontSize="14pt" pr={'3px'} mr={2} />

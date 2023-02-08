@@ -15,11 +15,11 @@ type SearchInputProps = {
 const SearchInput: React.FC<SearchInputProps> = ({ user }) => {
   return (
     <Flex
-      ml={2}
+      // mx={2}
       align="center"
-      display={{ base: 'none', md: 'unset' }}
+      display={{ base: 'none', sm: 'unset' }}
       width="300px"
-      m={'0 auto'}
+      m={'0 10px'}
     >
       <InputGroup>
         <InputLeftElement
@@ -31,7 +31,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ user }) => {
         <Input
           type="text"
           height="36px"
-          placeholder="Search book"
+          placeholder="Search"
           _placeholder={{ color: 'gray' }}
           //   fontSize={'10pt'}
           color={'lightyellow'}

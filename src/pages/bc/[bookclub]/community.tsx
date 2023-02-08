@@ -7,15 +7,17 @@ import safeJsonStringify from 'safe-json-stringify';
 import NotFound from '@/components/BookClub/NotFound';
 import Layout from '@/components/BookClub/Layout/Layout';
 
-type BookClubProps = {
+type BookClubCommunityProps = {
   bookClubData: BookClub;
 };
 
-const BookClubPage: React.FC<BookClubProps> = ({ bookClubData }) => {
+const BookClubCommunityPage: React.FC<BookClubCommunityProps> = ({
+  bookClubData
+}) => {
   if (!bookClubData) {
     return <NotFound />;
   }
-  return <Layout bookClubData={bookClubData} tab={0} />;
+  return <Layout bookClubData={bookClubData} tab={2} />;
 };
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -40,4 +42,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 }
 
-export default BookClubPage;
+export default BookClubCommunityPage;
