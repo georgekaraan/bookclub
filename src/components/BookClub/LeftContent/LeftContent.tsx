@@ -7,15 +7,17 @@ import {
   Flex
 } from '@chakra-ui/react';
 import React from 'react';
-import AddEntry from './Community/AddEntry/AddEntry';
 import { useRouter } from 'next/router';
 import CurrentlyReading from './CurrentlyReading';
+import Community from './Community/Community';
+import { BookClub } from '@/atoms/bookClubsAtom';
 
 type LeftContentProps = {
   tab: number;
+  bcData: BookClub;
 };
 
-const LeftContent: React.FC<LeftContentProps> = ({ tab }) => {
+const LeftContent: React.FC<LeftContentProps> = ({ tab, bcData }) => {
   const router = useRouter();
 
   const onClick = (tabRoute: string) => {
@@ -52,7 +54,7 @@ const LeftContent: React.FC<LeftContentProps> = ({ tab }) => {
             <p>two!</p>
           </TabPanel>
           <TabPanel>
-            <AddEntry />
+            <Community bcData={bcData} />
           </TabPanel>
           <TabPanel>
             <p>two!</p>

@@ -19,12 +19,15 @@ import { IoMdNotificationsOutline } from 'react-icons/io';
 import { User } from 'firebase/auth';
 import { useResetRecoilState } from 'recoil';
 import { bookClubState } from '@/atoms/bookClubsAtom';
+import { useRouter } from 'next/router';
 
 type UserMenuProps = {
   user?: User | null;
 };
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
+  const router = useRouter();
+
   const resetBcState = useResetRecoilState(bookClubState);
   const logout = async () => {
     await signOut(auth);
@@ -98,6 +101,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
             fontSize={{ base: '10pt', sm: '12pt', md: '14pt' }}
             color={'dark'}
             _hover={{ bg: 'dark', color: 'lightYellow' }}
+            onClick={() => router.push('/profile')}
           >
             <Flex align={'center'}>
               <Icon as={BsFillPersonFill} fontSize="14pt" mr={2} />

@@ -16,7 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ bookClubData, tab }) => {
       <Header bcData={bookClubData} />
       <Page>
         <>
-          <LeftContent tab={tab} />
+          <LeftContent tab={tab} bcData={bookClubData} />
         </>
         <>
           <RightContent />

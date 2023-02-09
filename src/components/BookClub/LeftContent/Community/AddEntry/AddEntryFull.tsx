@@ -1,5 +1,11 @@
+import { Entry } from '@/atoms/entryAtom';
+import { firestore, storage } from '@/firebase/clientApp';
 import { CloseIcon } from '@chakra-ui/icons';
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   Box,
   Flex,
   Icon,
@@ -12,18 +18,30 @@ import {
   Tabs,
   Text
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { User } from 'firebase/auth';
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  Timestamp,
+  updateDoc
+} from 'firebase/firestore';
+import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import { AiFillFileText, AiFillAudio } from 'react-icons/ai';
 import { BsImages, BsFillCameraVideoFill } from 'react-icons/bs';
 import { FaPollH } from 'react-icons/fa';
-import FormImage from '../EntryForm/FormImage';
-import FormText from '../EntryForm/FormText';
+import FormImage from './EntryForm/FormImage';
+import FormText from './EntryForm/FormText';
 
 type AddEntryFullProps = {
   setView: React.Dispatch<React.SetStateAction<string>>;
+  user: User;
 };
 
-const AddEntryFull: React.FC<AddEntryFullProps> = ({ setView }) => {
+const AddEntryFull: React.FC<AddEntryFullProps> = ({ setView, user }) => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [textInputs, setTextInputs] = useState({
     title: '',
@@ -31,8 +49,43 @@ const AddEntryFull: React.FC<AddEntryFullProps> = ({ setView }) => {
   });
   const [selectedFile, setSelectedFile] = useState<string>();
   const [tabIndex, setTabIndex] = useState<number>(0);
+  const [error, setError] = useState(false);
 
-  const handleAddEntry = () => {};
+  const handleAddEntry = async () => {
+    const { bookclub } = router.query;
+    console.log(bookclub);
+
+    const newEntry: Entry = {
+      bookClubId: bookclub as string,
+      creatorId: user?.uid,
+      title: textInputs.title,
+      body: textInputs.body,
+      creatorUserName: user?.displayName as string,
+      numberOfReplies: 0,
+      numberOfVotes: 0,
+      createdAt: serverTimestamp() as Timestamp
+    };
+    setLoading(true);
+    try {
+      const entryDocRef = await addDoc(
+        collection(firestore, 'entries'),
+        newEntry
+      );
+      if (selectedFile) {
+        const imageRef = ref(storage, `entries/${entryDocRef.id}/image`);
+        await uploadString(imageRef, selectedFile, 'data_url');
+        const downloadURL = await getDownloadURL(imageRef);
+
+        await updateDoc(entryDocRef, {
+          imageURL: downloadURL
+        });
+      }
+    } catch (error: any) {
+      console.log('handleAddEntry error', error.message);
+      setError(true);
+    }
+    setLoading(false);
+  };
 
   const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
@@ -131,21 +184,19 @@ const AddEntryFull: React.FC<AddEntryFullProps> = ({ setView }) => {
                 setTabIndex={setTabIndex}
               />
             </TabPanel>
-            <TabPanel>
-              <p onClick={() => setView('link')}>Three!</p>
-            </TabPanel>
-            <TabPanel>
-              <p onClick={() => setView('link')}>Four!</p>
-            </TabPanel>
-            <TabPanel>
-              <p onClick={() => setView('link')}>Five</p>
-            </TabPanel>
-            <TabPanel>
-              <p onClick={() => setView('link')}>Six</p>
-            </TabPanel>
+            <TabPanel></TabPanel>
+            <TabPanel></TabPanel>
+            <TabPanel></TabPanel>
+            <TabPanel></TabPanel>
           </TabPanels>
         </Tabs>
         {/* </Flex> */}
+        {error && (
+          <Alert status="error">
+            <AlertIcon />
+            <Text>There has been an error adding new entry 😭</Text>
+          </Alert>
+        )}
       </Flex>
     </>
   );

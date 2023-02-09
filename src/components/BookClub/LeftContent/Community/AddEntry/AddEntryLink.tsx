@@ -17,23 +17,27 @@ const AddEntryLink: React.FC<AddEntryLinkProps> = ({ setView }) => {
   }, []);
 
   return (
-    <Fade in={isOpen} height="56px">
+    <Flex w={'100%'} justify={'flex-end'}>
       <Flex
-        justify="space-evenly"
+        // justify="space-evenly"
+        // justify="flex-end"
         align="center"
         bg="white"
-        height="56px"
+        height={{ base: '34px', md: '56px' }}
         borderRadius={0}
         border="1px solid"
         borderColor="gray.100"
         p={2}
+        mr={2}
         boxShadow="lg"
-        w="100%"
+        w="30%"
         maxW={'700px'}
+        minW={'200px'}
       >
         <Input
           placeholder="Add Entry"
-          fontSize="10pt"
+          maxHeight={{ base: '26px', md: 'unset' }}
+          fontSize={{ base: '8pt', md: '10pt' }}
           _placeholder={{ color: 'gray.500' }}
           _hover={{
             bg: 'white',
@@ -69,7 +73,7 @@ const AddEntryLink: React.FC<AddEntryLinkProps> = ({ setView }) => {
         onClick={() => setView('full')}
       /> */}
       </Flex>
-    </Fade>
+    </Flex>
   );
 };
 export default AddEntryLink;
