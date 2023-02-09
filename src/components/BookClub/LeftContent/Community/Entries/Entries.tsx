@@ -1,18 +1,27 @@
 import { BookClub } from '@/atoms/bookClubsAtom';
 import { Entry } from '@/atoms/entryAtom';
-import { firestore } from '@/firebase/clientApp';
+import { auth, firestore } from '@/firebase/clientApp';
 import useEntries from '@/hooks/useEntries';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Stack, Text } from '@chakra-ui/react';
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import EntryItem from './EntryItem';
 
 type EntriesProps = {
   bcData: BookClub;
 };
 
 const Entries: React.FC<EntriesProps> = ({ bcData }) => {
+  const [user] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
-  const { entryStateValue, setEntryStateValue } = useEntries();
+  const {
+    entryStateValue,
+    setEntryStateValue,
+    onDeleteEntry,
+    onVote,
+    onSelectEntry
+  } = useEntries();
 
   const getEntries = async () => {
     try {
@@ -43,6 +52,25 @@ const Entries: React.FC<EntriesProps> = ({ bcData }) => {
     getEntries();
   }, []);
 
-  return <Flex>Hellp</Flex>;
+  return (
+    <>
+      <Stack>
+        <>
+          {entryStateValue.entries &&
+            entryStateValue.entries.map((entry: Entry, index) => (
+              <EntryItem
+                key={entry.id}
+                entry={entry}
+                onDelete={onDeleteEntry}
+                onVote={onVote}
+                onSelect={onSelectEntry}
+                userIsCreator={user?.uid === entry.creatorId}
+                // userVote={undefined}
+              />
+            ))}
+        </>
+      </Stack>
+    </>
+  );
 };
 export default Entries;

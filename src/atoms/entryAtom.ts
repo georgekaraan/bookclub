@@ -2,7 +2,7 @@ import { Timestamp } from "firebase/firestore";
 import { atom } from "recoil";
 
 export type Entry = {
-    id: string,
+    id?: string,
     bookClubId: string,
     bookId?: string,
     tag?: string,

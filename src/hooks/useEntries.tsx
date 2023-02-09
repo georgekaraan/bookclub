@@ -11,7 +11,10 @@ const useEntries = () => {
 
   return {
     entryStateValue,
-    setEntryStateValue
+    setEntryStateValue,
+    onVote,
+    onSelectEntry,
+    onDeleteEntry
   };
 };
 export default useEntries;
