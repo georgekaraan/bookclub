@@ -6,6 +6,7 @@ import { Flex, Stack, Text } from '@chakra-ui/react';
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import EntriesLoader from './EntriesLoader';
 import EntryItem from './EntryItem';
 
 type EntriesProps = {
@@ -15,61 +16,31 @@ type EntriesProps = {
 const Entries: React.FC<EntriesProps> = ({ bcData }) => {
   const [user] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
-  const {
-    entryStateValue,
-    setEntryStateValue,
-    onDeleteEntry,
-    onVote,
-    onSelectEntry
-  } = useEntries();
-
-  const getEntries = async () => {
-    try {
-      const entryQuery = query(
-        collection(firestore, 'entries'),
-        where('bookClubId', '==', bcData.id),
-        orderBy('createdAt', 'desc')
-      );
-
-      const entryDocs = await getDocs(entryQuery);
-      const entries = entryDocs.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-
-      setEntryStateValue((prev) => ({
-        ...prev,
-        entries: entries as Entry[]
-      }));
-
-      console.log(entryStateValue);
-    } catch (error: any) {
-      console.log('getEntries error', error.message);
-    }
-  };
-
-  useEffect(() => {
-    getEntries();
-  }, []);
+  const { entryStateValue, onDeleteEntry, onVote, onSelectEntry } =
+    useEntries();
 
   return (
     <>
-      <Stack>
-        <>
-          {entryStateValue.entries &&
-            entryStateValue.entries.map((entry: Entry, index) => (
-              <EntryItem
-                key={entry.id}
-                entry={entry}
-                onDelete={onDeleteEntry}
-                onVote={onVote}
-                onSelect={onSelectEntry}
-                userIsCreator={user?.uid === entry.creatorId}
-                // userVote={undefined}
-              />
-            ))}
-        </>
-      </Stack>
+      {loading ? (
+        <EntriesLoader />
+      ) : (
+        <Stack w={{ base: '100%', md: '85%' }} mx="auto" my={10} spacing={4}>
+          <>
+            {entryStateValue.entries &&
+              entryStateValue.entries.map((entry: Entry, index) => (
+                <EntryItem
+                  key={entry.id}
+                  entry={entry}
+                  onDelete={onDeleteEntry}
+                  onVote={onVote}
+                  onSelect={onSelectEntry}
+                  userIsCreator={user?.uid === entry.creatorId}
+                  // userVote={undefined}
+                />
+              ))}
+          </>
+        </Stack>
+      )}
     </>
   );
 };

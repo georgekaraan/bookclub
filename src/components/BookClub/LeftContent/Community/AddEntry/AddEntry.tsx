@@ -6,9 +6,10 @@ import AddEntryLink from './AddEntryLink';
 
 type AddEntryProps = {
   user?: User | null;
+  getEntries: () => {};
 };
 
-const AddEntry: React.FC<AddEntryProps> = ({ user }) => {
+const AddEntry: React.FC<AddEntryProps> = ({ user, getEntries }) => {
   const [view, setView] = useState('link');
 
   return (
@@ -16,7 +17,7 @@ const AddEntry: React.FC<AddEntryProps> = ({ user }) => {
       <Flex justify={'center'}>
         {view == 'link' && <AddEntryLink setView={setView} />}
         {user && view == 'full' && (
-          <AddEntryFull setView={setView} user={user} />
+          <AddEntryFull setView={setView} user={user} getEntries={getEntries} />
         )}
       </Flex>
     </>

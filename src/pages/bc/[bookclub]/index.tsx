@@ -1,11 +1,12 @@
 import React from 'react';
 import { GetServerSidePropsContext } from 'next';
-import { firestore } from '@/firebase/clientApp';
+import { auth, firestore } from '@/firebase/clientApp';
 import { doc, getDoc } from 'firebase/firestore';
 import { BookClub } from '@/atoms/bookClubsAtom';
 import safeJsonStringify from 'safe-json-stringify';
 import NotFound from '@/components/BookClub/NotFound';
 import Layout from '@/components/BookClub/Layout/Layout';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 type BookClubProps = {
   bookClubData: BookClub;
@@ -15,6 +16,7 @@ const BookClubPage: React.FC<BookClubProps> = ({ bookClubData }) => {
   if (!bookClubData) {
     return <NotFound />;
   }
+
   return <Layout bookClubData={bookClubData} tab={0} />;
 };
 

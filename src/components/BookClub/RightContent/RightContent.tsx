@@ -1,3 +1,5 @@
+import { BookClub } from '@/atoms/bookClubsAtom';
+import BookClub from '@/components/Navbar/BookClub';
 import {
   Box,
   Flex,
@@ -7,14 +9,20 @@ import {
   TabPanels,
   Tabs
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CurrentlyReading from '../LeftContent/CurrentlyReading';
 import About from './About';
 import Members from './Members';
 
-type RightContentProps = {};
+type RightContentProps = {
+  bcData: BookClub;
+};
 
-const RightContent: React.FC<RightContentProps> = () => {
+const RightContent: React.FC<RightContentProps> = ({ bcData }) => {
+  // const [members, setMembers] = useState([]);
+
+  // useEffect(() => setMembers([]), []);
+
   return (
     <Flex
       justify={'center'}

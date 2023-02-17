@@ -28,11 +28,12 @@ const AddEntryLink: React.FC<AddEntryLinkProps> = ({ setView }) => {
         border="1px solid"
         borderColor="gray.100"
         p={2}
-        mr={2}
+        mr={20}
         boxShadow="lg"
-        w="30%"
-        maxW={'700px'}
+        // w="100%"
+        // maxW={'700px'}
         minW={'200px'}
+        w={'300px'}
       >
         <Input
           placeholder="Add Entry"

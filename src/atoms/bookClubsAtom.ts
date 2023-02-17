@@ -15,12 +15,13 @@ export interface BookClub {
 export interface BcSnippet {
     bookClubId: string,
     isModerator?: boolean,
+    isOwner?: boolean,
     imageURL?: string
 }
 
 interface BookClubState {
     mySnippets: BcSnippet[],
-    // visited Book Clubs
+    currentBC?: BookClub
 }
 
 const defaultBookClubState: BookClubState = {

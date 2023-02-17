@@ -44,6 +44,7 @@ const LeftContent: React.FC<LeftContentProps> = ({ tab, bcData }) => {
           <Tab onClick={() => onClick('')}>Current Book</Tab>
           <Tab onClick={() => onClick('progress')}>Progress</Tab>
           <Tab onClick={() => onClick('community')}>Community</Tab>
+          <Tab onClick={() => onClick('quotes')}>Quotes</Tab>
           <Tab onClick={() => onClick('poll')}>Poll</Tab>
         </TabList>
         <TabPanels>
@@ -52,6 +53,9 @@ const LeftContent: React.FC<LeftContentProps> = ({ tab, bcData }) => {
           </TabPanel>
           <TabPanel>
             <p>two!</p>
+          </TabPanel>
+          <TabPanel>
+            <Community bcData={bcData} />
           </TabPanel>
           <TabPanel>
             <Community bcData={bcData} />

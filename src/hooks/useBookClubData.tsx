@@ -3,9 +3,13 @@ import { BcSnippet, BookClub, bookClubState } from '@/atoms/bookClubsAtom';
 import { auth, firestore } from '@/firebase/clientApp';
 import {
   collection,
+  collectionGroup,
   doc,
+  getDoc,
   getDocs,
   increment,
+  query,
+  where,
   writeBatch
 } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
@@ -19,6 +23,28 @@ const useBookClubData = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const setAuthModalState = useSetRecoilState(authModalState);
+
+  const getMembers = async (bcData: BookClub) => {
+    const bcSnippetsRef = collectionGroup(firestore, 'bcSnippets');
+    const q = query(bcSnippetsRef, where('bookClubId', '==', bcData.id));
+
+    // // Fetch the documents that match the query
+    const querySnapshot = await getDocs(q);
+    const userIds = querySnapshot.docs.map((doc) => doc.ref.parent.parent?.id);
+
+    // Fetch the display name for each user ID
+    const memberUsers = await Promise.all(
+      userIds.map(async (userId) => {
+        const userDoc = doc(firestore, 'users', userId!);
+        const userSnapshot = await getDoc(userDoc);
+        console.log(userSnapshot.data());
+
+        const userData = userSnapshot.data();
+        return { userId, displayName: userData?.displayName };
+      })
+    );
+    console.log(memberUsers);
+  };
 
   const onJoinorLeaveBookClub = (bcData: BookClub, isMember: boolean) => {
     if (!user) {
@@ -69,7 +95,8 @@ const useBookClubData = () => {
         newSnippet
       );
       batch.update(doc(firestore, 'bookclubs', bcData.id), {
-        numberOfMembers: increment(1)
+        numberOfMembers: increment(1),
+        members: [...bcData.members, user?.uid]
       });
 
       await batch.commit();
@@ -118,7 +145,8 @@ const useBookClubData = () => {
   return {
     bcStateValue,
     onJoinorLeaveBookClub,
-    loading
+    loading,
+    getMembers
   };
 };
 export default useBookClubData;

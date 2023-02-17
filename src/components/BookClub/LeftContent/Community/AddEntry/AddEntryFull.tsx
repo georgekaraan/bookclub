@@ -1,5 +1,6 @@
-import { Entry } from '@/atoms/entryAtom';
+import { Entry, entryState } from '@/atoms/entryAtom';
 import { firestore, storage } from '@/firebase/clientApp';
+import useSelectFile from '@/hooks/useSelectFile';
 import { CloseIcon } from '@chakra-ui/icons';
 import {
   Alert,
@@ -32,28 +33,36 @@ import React, { useEffect, useState } from 'react';
 import { AiFillFileText, AiFillAudio } from 'react-icons/ai';
 import { BsImages, BsFillCameraVideoFill } from 'react-icons/bs';
 import { FaPollH } from 'react-icons/fa';
+import { useSetRecoilState } from 'recoil';
 import FormImage from './EntryForm/FormImage';
 import FormText from './EntryForm/FormText';
 
 type AddEntryFullProps = {
   setView: React.Dispatch<React.SetStateAction<string>>;
   user: User;
+  getEntries: () => {};
 };
 
-const AddEntryFull: React.FC<AddEntryFullProps> = ({ setView, user }) => {
+const AddEntryFull: React.FC<AddEntryFullProps> = ({
+  setView,
+  user,
+  getEntries
+}) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [textInputs, setTextInputs] = useState({
     title: '',
     body: ''
   });
-  const [selectedFile, setSelectedFile] = useState<string>();
+  // const [selectedFile, setSelectedFile] = useState<string>();
+
+  const { onSelectFile, selectedFile, setSelectedFile } = useSelectFile();
+
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [error, setError] = useState(false);
 
   const handleAddEntry = async () => {
     const { bookclub } = router.query;
-    console.log(bookclub);
 
     const newEntry: Entry = {
       bookClubId: bookclub as string,
@@ -80,24 +89,13 @@ const AddEntryFull: React.FC<AddEntryFullProps> = ({ setView, user }) => {
           imageURL: downloadURL
         });
       }
+      getEntries();
+      setView('link');
     } catch (error: any) {
       console.log('handleAddEntry error', error.message);
       setError(true);
     }
     setLoading(false);
-  };
-
-  const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const reader = new FileReader();
-    if (event.target.files?.[0]) {
-      reader.readAsDataURL(event.target.files[0]);
-    }
-
-    reader.onload = (readerEvent) => {
-      if (readerEvent.target?.result) {
-        setSelectedFile(readerEvent.target?.result as string);
-      }
-    };
   };
 
   const onTextChange = (
@@ -124,8 +122,8 @@ const AddEntryFull: React.FC<AddEntryFullProps> = ({ setView, user }) => {
         borderColor="gray.100"
         boxShadow={'lg'}
         p={2}
-        w="100%"
-        maxW={'700px'}
+        w={{ base: '100%', md: '85%' }}
+        // maxW={'700px'}
       >
         <Flex justify={'flex-end'}>
           <IconButton
@@ -178,7 +176,7 @@ const AddEntryFull: React.FC<AddEntryFullProps> = ({ setView, user }) => {
             </TabPanel>
             <TabPanel>
               <FormImage
-                onSelectImage={onSelectImage}
+                onSelectImage={onSelectFile}
                 selectedFile={selectedFile}
                 setSelectedFile={setSelectedFile}
                 setTabIndex={setTabIndex}
