@@ -1,16 +1,21 @@
+import { authModalState } from '@/atoms/authModalAtom';
 import { Fade, Flex, Icon, Input, useDisclosure } from '@chakra-ui/react';
+import { User } from 'firebase/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { BsLink45Deg } from 'react-icons/bs';
 import { IoImageOutline } from 'react-icons/io5';
+import { useSetRecoilState } from 'recoil';
 
 type AddEntryLinkProps = {
   setView: React.Dispatch<React.SetStateAction<string>>;
+  user?: User | null;
 };
 
-const AddEntryLink: React.FC<AddEntryLinkProps> = ({ setView }) => {
+const AddEntryLink: React.FC<AddEntryLinkProps> = ({ setView, user }) => {
   const { isOpen, onToggle } = useDisclosure();
+  const setAuthModalState = useSetRecoilState(authModalState);
 
   useEffect(() => {
     onToggle();
@@ -19,26 +24,22 @@ const AddEntryLink: React.FC<AddEntryLinkProps> = ({ setView }) => {
   return (
     <Flex w={'100%'} justify={'flex-end'}>
       <Flex
-        // justify="space-evenly"
-        // justify="flex-end"
         align="center"
         bg="white"
-        height={{ base: '34px', md: '56px' }}
+        height="56px"
         borderRadius={0}
         border="1px solid"
         borderColor="gray.100"
         p={2}
         mr={20}
         boxShadow="lg"
-        // w="100%"
-        // maxW={'700px'}
         minW={'200px'}
         w={'300px'}
       >
         <Input
           placeholder="Add Entry"
-          maxHeight={{ base: '26px', md: 'unset' }}
-          fontSize={{ base: '8pt', md: '10pt' }}
+          // maxHeight={{ base: '26px', md: 'unset' }}
+          fontSize="10pt"
           _placeholder={{ color: 'gray.500' }}
           _hover={{
             bg: 'white',
@@ -56,7 +57,11 @@ const AddEntryLink: React.FC<AddEntryLinkProps> = ({ setView }) => {
           height="36px"
           borderRadius={4}
           mr={4}
-          onClick={() => setView('full')}
+          onClick={
+            user
+              ? () => setView('full')
+              : () => setAuthModalState({ open: true, view: 'login' })
+          }
         />
         <Icon
           as={IoImageOutline}
@@ -64,7 +69,11 @@ const AddEntryLink: React.FC<AddEntryLinkProps> = ({ setView }) => {
           mr={4}
           color="gray.600"
           cursor="pointer"
-          onClick={() => setView('full')}
+          onClick={
+            user
+              ? () => setView('full')
+              : () => setAuthModalState({ open: true, view: 'login' })
+          }
         />
         {/* <Icon
         as={BsLink45Deg}

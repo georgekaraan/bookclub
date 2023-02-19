@@ -2,17 +2,24 @@ import { BookClub } from '@/atoms/bookClubsAtom';
 import { Entry } from '@/atoms/entryAtom';
 import { auth, firestore } from '@/firebase/clientApp';
 import useEntries from '@/hooks/useEntries';
+import { Flex, Icon, Stack, Text } from '@chakra-ui/react';
+
 import { query, collection, where, orderBy, getDocs } from 'firebase/firestore';
-import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import React, { useContext, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import AddEntry from './AddEntry/AddEntry';
 import Entries from './Entries/Entries';
+import SingleEntry from './Entry/SingleEntry';
+import { IoIosArrowBack } from 'react-icons/io';
 
 type CommunityProps = {
   bcData: BookClub;
 };
 
 const Community: React.FC<CommunityProps> = ({ bcData }) => {
+  const router = useRouter();
+
   const [user] = useAuthState(auth);
   const { entryStateValue, setEntryStateValue } = useEntries();
 
@@ -44,6 +51,24 @@ const Community: React.FC<CommunityProps> = ({ bcData }) => {
   useEffect(() => {
     getEntries();
   }, []);
+
+  // if (singleEntry) return <Entries bcData={bcData} />;
+
+  console.log('What is the pathname?', router.pathname);
+
+  if (router.pathname.includes('entry')) {
+    return (
+      <>
+        <Stack>
+          <Flex align="center">
+            <Icon as={IoIosArrowBack} />
+            <Text>Back</Text>
+          </Flex>
+          <SingleEntry />
+        </Stack>
+      </>
+    );
+  }
 
   return (
     <>

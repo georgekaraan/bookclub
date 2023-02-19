@@ -35,7 +35,12 @@ const Entries: React.FC<EntriesProps> = ({ bcData }) => {
                   onVote={onVote}
                   onSelect={onSelectEntry}
                   userIsCreator={user?.uid === entry.creatorId}
-                  // userVote={undefined}
+                  userVote={
+                    entryStateValue.entryVotes &&
+                    entryStateValue.entryVotes.find(
+                      (item) => item.entryId === entry.id
+                    )?.voteValue
+                  }
                 />
               ))}
           </>

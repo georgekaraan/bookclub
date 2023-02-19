@@ -15,7 +15,7 @@ const AddEntry: React.FC<AddEntryProps> = ({ user, getEntries }) => {
   return (
     <>
       <Flex justify={'center'}>
-        {view == 'link' && <AddEntryLink setView={setView} />}
+        {view == 'link' && <AddEntryLink setView={setView} user={user} />}
         {user && view == 'full' && (
           <AddEntryFull setView={setView} user={user} getEntries={getEntries} />
         )}

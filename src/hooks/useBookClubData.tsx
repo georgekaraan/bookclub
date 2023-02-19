@@ -1,5 +1,6 @@
 import { authModalState } from '@/atoms/authModalAtom';
 import { BcSnippet, BookClub, bookClubState } from '@/atoms/bookClubsAtom';
+import { Member } from '@/components/BookClub/RightContent/RightContent';
 import { auth, firestore } from '@/firebase/clientApp';
 import {
   collection,
@@ -30,20 +31,42 @@ const useBookClubData = () => {
 
     // // Fetch the documents that match the query
     const querySnapshot = await getDocs(q);
+    console.log(querySnapshot);
+
     const userIds = querySnapshot.docs.map((doc) => doc.ref.parent.parent?.id);
 
-    // Fetch the display name for each user ID
     const memberUsers = await Promise.all(
       userIds.map(async (userId) => {
-        const userDoc = doc(firestore, 'users', userId!);
+        if (!userId) return null;
+        const userDoc = doc(firestore, 'users', userId);
         const userSnapshot = await getDoc(userDoc);
-        console.log(userSnapshot.data());
-
         const userData = userSnapshot.data();
-        return { userId, displayName: userData?.displayName };
+        if (!userData) return;
+
+        const bcSnippetsDoc = doc(
+          firestore,
+          `users/${userId}/bcSnippets/`,
+          bcData.id
+        );
+        const bcSnippetsSnapshot = await getDoc(bcSnippetsDoc);
+        const bcSnippetsData = bcSnippetsSnapshot.data();
+
+        return {
+          userId,
+          displayName: userData?.displayName,
+          image: userData?.photoURL,
+          isModerator: bcSnippetsData?.isModerator || false
+        };
       })
     );
-    console.log(memberUsers);
+
+    const filteredMembers = memberUsers.filter(
+      (member) => member?.userId !== null
+    ) as Member[];
+
+    // console.log('I am the filtered Members', filteredMembers);
+
+    return filteredMembers;
   };
 
   const onJoinorLeaveBookClub = (bcData: BookClub, isMember: boolean) => {
@@ -138,7 +161,13 @@ const useBookClubData = () => {
   };
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setBcStateValue((prev) => ({
+        ...prev,
+        mySnippets: []
+      }));
+      return;
+    }
     getMySnippets();
   }, [user]);
 

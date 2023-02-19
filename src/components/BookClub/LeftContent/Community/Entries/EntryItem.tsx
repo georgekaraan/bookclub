@@ -1,4 +1,4 @@
-import { Entry } from '@/atoms/entryAtom';
+import { Entry, entryState } from '@/atoms/entryAtom';
 import {
   Flex,
   Image,
@@ -21,12 +21,14 @@ import {
   useToast,
   Box
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BsFillBookmarkFill,
   BsBookmarkCheck,
   BsBookmarkFill,
-  BsPatchMinus
+  BsPatchMinus,
+  BsPatchMinusFill,
+  BsFillBookmarkCheckFill
 } from 'react-icons/bs';
 import {
   TbFiretruck,
@@ -43,14 +45,20 @@ import moment from 'moment';
 import { ChevronDownIcon, DeleteIcon } from '@chakra-ui/icons';
 import { IoShareSocialOutline } from 'react-icons/io5';
 import DeleteEntryModal from '@/components/Modal/Entry/DeleteEntryModal';
+import { useRecoilValue } from 'recoil';
 
 type EntryItemProps = {
   entry: Entry;
   userIsCreator: boolean;
   userVote?: number;
-  onVote: () => {};
+  onVote: (
+    event: React.MouseEvent<SVGElement, MouseEvent>,
+    entry: Entry,
+    bookClubId: string,
+    vote: number
+  ) => void;
   onDelete: (entry: Entry) => Promise<boolean>;
-  onSelect: () => {};
+  onSelect?: (entry: Entry) => {};
 };
 
 const EntryItem: React.FC<EntryItemProps> = ({
@@ -65,8 +73,11 @@ const EntryItem: React.FC<EntryItemProps> = ({
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [error, setError] = useState(false);
 
+  const singleEntry = !onSelect;
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const entryStateValue = useRecoilValue(entryState);
 
   const handleDelete = async () => {
     setLoadingDelete(true);
@@ -86,12 +97,11 @@ const EntryItem: React.FC<EntryItemProps> = ({
         border={'1px solid'}
         borderColor="gray.200"
         templateColumns="48px 1fr 40px"
-        // height="500px"
-        // minH="200px"
-        cursor="pointer"
-        _hover={{ boxShadow: 'lg', borderColor: 'gray.400' }}
+        cursor={singleEntry ? 'default' : 'pointer'}
+        _hover={singleEntry ? {} : { boxShadow: 'lg', borderColor: 'gray.400' }}
         alignContent={'center'}
         justifyContent="center"
+        onClick={() => onSelect && onSelect(entry)}
       >
         <GridItem display="grid">
           <Flex
@@ -100,9 +110,6 @@ const EntryItem: React.FC<EntryItemProps> = ({
             borderColor="gray.200"
             bg={'gray.50'}
             width="48px"
-            // minH="100%"
-            // h="500px"
-            // maxH={'500px'}
             align="center"
             gap="4px"
             justify="center"
@@ -111,9 +118,15 @@ const EntryItem: React.FC<EntryItemProps> = ({
             <Icon
               mt={1}
               fontSize="24px"
-              as={userVote == 1 ? BsBookmarkFill : BsBookmarkCheck}
+              as={
+                entryStateValue.entryVotes.find(
+                  (item) => item.entryId === entry.id
+                )?.voteValue == 1
+                  ? BsFillBookmarkCheckFill
+                  : BsBookmarkCheck
+              }
               cursor="pointer"
-              onClick={onVote}
+              onClick={(event) => onVote(event, entry, entry.bookClubId, 1)}
               transition="all 0.2s"
               _hover={{
                 transform: 'scale(1.2)',
@@ -123,9 +136,15 @@ const EntryItem: React.FC<EntryItemProps> = ({
             <Text mt={1}>{entry.numberOfVotes}</Text>
             <Icon
               fontSize="24px"
-              as={BsPatchMinus}
+              as={
+                entryStateValue.entryVotes.find(
+                  (item) => item.entryId === entry.id
+                )?.voteValue == -1
+                  ? BsPatchMinusFill
+                  : BsPatchMinus
+              }
               cursor="pointer"
-              onClick={onVote}
+              onClick={(event) => onVote(event, entry, entry.bookClubId, -1)}
               _hover={{
                 transform: 'scale(1.2)',
                 color: 'dark'
@@ -137,12 +156,43 @@ const EntryItem: React.FC<EntryItemProps> = ({
               fontSize="24px"
               as={BiCommentDetail}
               cursor="pointer"
-              onClick={onVote}
+              // onClick={onVote}
               _hover={{
                 transform: 'scale(1.2)',
                 color: 'dark'
               }}
             />
+
+            {singleEntry && (
+              <>
+                <Divider my={2} />
+                <Icon
+                  fontSize="24px"
+                  as={IoShareSocialOutline}
+                  cursor="pointer"
+                  // onClick={onVote}
+                  _hover={{
+                    transform: 'scale(1.2)',
+                    color: 'dark'
+                  }}
+                />
+                {userIsCreator && (
+                  <>
+                    <Divider my={2} />
+                    <DeleteIcon
+                      fontSize="24px"
+                      cursor="pointer"
+                      // onClick={onVote}
+                      _hover={{
+                        transform: 'scale(1.2)',
+                        color: 'dark'
+                      }}
+                      onClick={onOpen}
+                    />
+                  </>
+                )}
+              </>
+            )}
           </Flex>
           {/* <Icon
             fontSize="24px"
@@ -261,7 +311,7 @@ const EntryItem: React.FC<EntryItemProps> = ({
             </Text>
           </Flex>
         </GridItem>
-        <GridItem display="grid">
+        <GridItem display={singleEntry ? 'none' : 'grid'}>
           <Menu>
             <MenuButton
               borderRadius="unset"
@@ -271,11 +321,10 @@ const EntryItem: React.FC<EntryItemProps> = ({
               _hover={{
                 bg: 'gray.100',
                 borderColor: 'gray.400'
-                // borderLeft: '1px solid',
-                // borderBottom: '1px solid'
               }}
               _expanded={{ bg: 'gray.200' }}
               transition="all 0.2s"
+              onClick={(event) => event.stopPropagation()}
             >
               <Icon
                 fontSize="24px"
@@ -284,7 +333,10 @@ const EntryItem: React.FC<EntryItemProps> = ({
                 cursor="pointer"
               />
             </MenuButton>
-            <MenuList bgPosition="right">
+            <MenuList
+              onClick={(event) => event.stopPropagation()}
+              bgPosition="right"
+            >
               <MenuItem fontSize="12pt" icon={<IoShareSocialOutline />}>
                 <Text size="sm">Share</Text>
               </MenuItem>
