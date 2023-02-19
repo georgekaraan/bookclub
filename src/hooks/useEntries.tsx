@@ -124,8 +124,6 @@ const useEntries = () => {
   };
 
   const onSelectEntry = async (entry: Entry) => {
-    console.log('I am the entry::', entry);
-
     setEntryStateValue((prev) => ({
       ...prev,
       selectedEntry: entry

@@ -22,7 +22,7 @@ const AddEntryLink: React.FC<AddEntryLinkProps> = ({ setView, user }) => {
   }, []);
 
   return (
-    <Flex w={'100%'} justify={'flex-end'}>
+    <Flex w={'100%'} maxW="800px" justify={'flex-end'}>
       <Flex
         align="center"
         bg="white"
@@ -31,7 +31,7 @@ const AddEntryLink: React.FC<AddEntryLinkProps> = ({ setView, user }) => {
         border="1px solid"
         borderColor="gray.100"
         p={2}
-        mr={20}
+        // mr={20}
         boxShadow="lg"
         minW={'200px'}
         w={'300px'}

@@ -41,8 +41,6 @@ const Community: React.FC<CommunityProps> = ({ bcData }) => {
         ...prev,
         entries: entries as Entry[]
       }));
-
-      console.log(entryStateValue);
     } catch (error: any) {
       console.log('getEntries error', error.message);
     }
@@ -51,10 +49,6 @@ const Community: React.FC<CommunityProps> = ({ bcData }) => {
   useEffect(() => {
     getEntries();
   }, []);
-
-  // if (singleEntry) return <Entries bcData={bcData} />;
-
-  console.log('What is the pathname?', router.pathname);
 
   if (router.pathname.includes('entry')) {
     return (

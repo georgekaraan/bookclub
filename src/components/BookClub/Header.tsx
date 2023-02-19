@@ -132,7 +132,7 @@ const Header: React.FC<HeaderProps> = ({ bcData }) => {
               height="36px"
               px={5}
               onClick={onJoinOrLeave}
-              isLoading={loading}
+              // isLoading={loading}
             >
               {isMember
                 ? 'Member'

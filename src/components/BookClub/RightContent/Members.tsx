@@ -48,7 +48,7 @@ const Members: React.FC<MembersProps> = ({ members, creator }) => {
       {members
         .filter((member: Member) => member.isModerator)
         .map((member: Member) => (
-          <Flex align="center">
+          <Flex key={member.userId} align="center">
             {member.image ? (
               <Image
                 maxH="40px"
@@ -75,7 +75,7 @@ const Members: React.FC<MembersProps> = ({ members, creator }) => {
             member.userId != creator?.userId && !member.isModerator
         )
         .map((member: Member) => (
-          <Flex align="center">
+          <Flex key={member.userId} align="center">
             {member.image ? (
               <Image
                 maxH="40px"

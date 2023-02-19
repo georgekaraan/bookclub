@@ -122,8 +122,9 @@ const AddEntryFull: React.FC<AddEntryFullProps> = ({
         borderColor="gray.100"
         boxShadow={'lg'}
         p={2}
-        w={{ base: '100%', md: '85%' }}
-        // maxW={'700px'}
+        // w={{ base: '100%', md: '85%' }}
+        maxW={'800px'}
+        w="100%"
       >
         <Flex justify={'flex-end'}>
           <IconButton

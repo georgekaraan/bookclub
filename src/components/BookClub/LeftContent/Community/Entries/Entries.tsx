@@ -24,7 +24,13 @@ const Entries: React.FC<EntriesProps> = ({ bcData }) => {
       {loading ? (
         <EntriesLoader />
       ) : (
-        <Stack w={{ base: '100%', md: '85%' }} mx="auto" my={10} spacing={4}>
+        <Stack
+          // w={{ base: '100%', md: '85%' }}
+
+          mx="auto"
+          my={4}
+          spacing={4}
+        >
           <>
             {entryStateValue.entries &&
               entryStateValue.entries.map((entry: Entry, index) => (

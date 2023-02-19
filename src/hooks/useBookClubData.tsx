@@ -31,7 +31,6 @@ const useBookClubData = () => {
 
     // // Fetch the documents that match the query
     const querySnapshot = await getDocs(q);
-    console.log(querySnapshot);
 
     const userIds = querySnapshot.docs.map((doc) => doc.ref.parent.parent?.id);
 
@@ -63,8 +62,6 @@ const useBookClubData = () => {
     const filteredMembers = memberUsers.filter(
       (member) => member?.userId !== null
     ) as Member[];
-
-    // console.log('I am the filtered Members', filteredMembers);
 
     return filteredMembers;
   };
