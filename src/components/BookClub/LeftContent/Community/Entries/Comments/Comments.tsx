@@ -1,5 +1,6 @@
 import { Entry, entryState } from '@/atoms/entryAtom';
 import { firestore } from '@/firebase/clientApp';
+import useUser from '@/hooks/useUser';
 import {
   Box,
   Flex,
@@ -43,6 +44,7 @@ const Comments: React.FC<CommentsProps> = forwardRef(
     const [deleteLoadingId, setDeleteLoadingId] = useState('');
     const [createLoading, setCreateLoading] = useState(false);
     const setEntryStateValue = useSetRecoilState(entryState);
+    const { userName } = useUser();
 
     const onCreateComment = async () => {
       setCreateLoading(true);
@@ -54,9 +56,7 @@ const Comments: React.FC<CommentsProps> = forwardRef(
         const newComment: Comment = {
           id: commentDocRef.id,
           creatorId: user.uid,
-          creatorDisplayName: user?.displayName
-            ? user.displayName
-            : user.email!.split('a')[0],
+          creatorDisplayName: userName,
           bookClubId,
           entryId: selectedEntry?.id!,
           entryTitle: selectedEntry?.title!,
@@ -190,7 +190,7 @@ const Comments: React.FC<CommentsProps> = forwardRef(
                           comment={comment}
                           onDeleteComment={onDeleteComment}
                           deleteLoading={deleteLoadingId == comment.id}
-                          userId={user.uid}
+                          userId={user?.uid}
                           key={comment.id}
                         />
                       ))}

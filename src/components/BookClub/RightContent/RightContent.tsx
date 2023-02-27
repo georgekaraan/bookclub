@@ -27,16 +27,20 @@ export interface Member {
 const RightContent: React.FC<RightContentProps> = ({ bcData }) => {
   const [members, setMembers] = useState<Member[]>([]);
   const [creator, setCreator] = useState<Member>();
+  const [isLoadingMembers, setIsLoadingMembers] = useState(false);
 
   const { getMembers } = useBookClubData();
 
   useEffect(() => {
     async function fetchMembers() {
+      setIsLoadingMembers(true);
       const memberUsers = await getMembers(bcData);
       setMembers(memberUsers);
+      setIsLoadingMembers(false);
     }
+
     fetchMembers();
-  }, []);
+  }, [bcData]);
 
   useEffect(() => {
     setCreator(
@@ -68,7 +72,11 @@ const RightContent: React.FC<RightContentProps> = ({ bcData }) => {
               <About />
             </TabPanel>
             <TabPanel>
-              <Members members={members} creator={creator} />
+              <Members
+                members={members}
+                creator={creator}
+                isLoadingMembers={isLoadingMembers}
+              />
             </TabPanel>
           </TabPanels>
         </Tabs>

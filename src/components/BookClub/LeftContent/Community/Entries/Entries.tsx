@@ -47,6 +47,9 @@ const Entries: React.FC<EntriesProps> = ({ bcData }) => {
                       (item) => item.entryId === entry.id
                     )?.voteValue
                   }
+                  scrollToComments={function (): void {
+                    throw new Error('Function not implemented.');
+                  }}
                 />
               ))}
           </>

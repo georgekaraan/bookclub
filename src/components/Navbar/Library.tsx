@@ -1,22 +1,22 @@
-import { auth } from '@/firebase/clientApp';
+import { bookClubState } from '@/atoms/bookClubsAtom';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
-  Image,
   Flex,
+  Icon,
+  Image,
   Menu,
   MenuButton,
-  Icon,
-  MenuList,
   MenuDivider,
   MenuItem,
+  MenuList,
   Text
 } from '@chakra-ui/react';
-import { signOut, User } from 'firebase/auth';
+import { User } from 'firebase/auth';
+import Link from 'next/link';
 import React from 'react';
-import { BiLogOut } from 'react-icons/bi';
-import { BsFillPersonFill } from 'react-icons/bs';
+import { BsBook } from 'react-icons/bs';
 import { FaBookOpen } from 'react-icons/fa';
-import AddBookModal from '../Modal/CreateBookClub/CreateBookClub';
+import { useRecoilValue } from 'recoil';
 import BookClub from './BookClub';
 
 type LibraryProps = {
@@ -24,6 +24,8 @@ type LibraryProps = {
 };
 
 const Library: React.FC<LibraryProps> = ({ user }) => {
+  const mySnippets = useRecoilValue(bookClubState).mySnippets;
+
   return (
     <>
       {user && (
@@ -55,6 +57,32 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
             <MenuList w={{ base: '200px', sm: '300px' }} borderRadius="0%">
               <>
                 <Text userSelect={'none'} ml={2} fontWeight={'extrabold'}>
+                  My Bookclubs
+                </Text>
+                <MenuDivider />
+              </>
+              {mySnippets.map((bc) => (
+                <Link href={`/bc/${bc.bookClubId}`} key={bc.bookClubId}>
+                  <MenuItem
+                    fontSize={{ base: '10pt', sm: '11pt', md: '12pt' }}
+                    color={'dark'}
+                    _hover={{ bg: 'dark', color: 'lightYellow' }}
+                    height="40px"
+                  >
+                    <Flex align={'center'}>
+                      {bc.imageURL ? (
+                        <Image src={bc.imageURL} mr={2} w="30px" maxH="38px" />
+                      ) : (
+                        <Icon as={BsBook} mr={2} w="30px" maxH="38px" />
+                      )}
+                      {bc.bookClubId}
+                    </Flex>
+                  </MenuItem>
+                  <MenuDivider />
+                </Link>
+              ))}
+              {/* <>
+                <Text userSelect={'none'} ml={2} fontWeight={'extrabold'}>
                   Currently Reading
                 </Text>
                 <MenuDivider />
@@ -66,7 +94,6 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
                 height="40px"
               >
                 <Flex align={'center'}>
-                  {/* <Icon as={BsFillPersonFill} fontSize="14pt" mr={2} /> */}
                   <Image
                     src="https://m.media-amazon.com/images/I/51UuSI9g6lL.jpg"
                     mr={2}
@@ -89,7 +116,6 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
                 height="40px"
               >
                 <Flex align={'center'}>
-                  {/* <Icon as={BsFillPersonFill} fontSize="14pt" mr={2} /> */}
                   <Image
                     src="https://m.media-amazon.com/images/I/91TpAAdiBLL.jpg"
                     mr={2}
@@ -98,7 +124,7 @@ const Library: React.FC<LibraryProps> = ({ user }) => {
                   Hitchhiker's Guide to the Galaxy
                 </Flex>
               </MenuItem>
-              <MenuDivider />
+              <MenuDivider /> */}
               <BookClub />
             </MenuList>
           </Menu>

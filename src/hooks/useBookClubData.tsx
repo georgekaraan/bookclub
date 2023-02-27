@@ -52,7 +52,7 @@ const useBookClubData = () => {
 
         return {
           userId,
-          displayName: userData?.displayName,
+          displayName: userData?.userName,
           image: userData?.photoURL,
           isModerator: bcSnippetsData?.isModerator || false
         };
@@ -115,8 +115,7 @@ const useBookClubData = () => {
         newSnippet
       );
       batch.update(doc(firestore, 'bookclubs', bcData.id), {
-        numberOfMembers: increment(1),
-        members: [...bcData.members, user?.uid]
+        numberOfMembers: increment(1)
       });
 
       await batch.commit();
@@ -172,7 +171,8 @@ const useBookClubData = () => {
     bcStateValue,
     onJoinorLeaveBookClub,
     loading,
-    getMembers
+    getMembers,
+    getMySnippets
   };
 };
 export default useBookClubData;

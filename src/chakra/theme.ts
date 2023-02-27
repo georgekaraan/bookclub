@@ -32,6 +32,23 @@ export const theme = extendTheme({
     })
   },
   components: {
-    Button
+    Button,
+    Drawer: {
+      parts: ['dialog', 'header', 'body'],
+      variants: {
+        secondary: {
+          dialog: {
+            maxW: "700px",
+          }
+      },
+    },
+      sizes: {
+        g: {
+          content: {
+            width: "100px"
+          }
+        }
+      }
+    }
   }
 })

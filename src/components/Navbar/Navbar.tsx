@@ -1,14 +1,20 @@
 import { Flex, Heading, Image } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import DarkModeSwitch from './DarkModeSwitch';
 import RightContent from './RightContent/RightContent';
 import SearchInput from './SearchInput';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/firebase/clientApp';
 import Library from './Library';
+import { useRouter } from 'next/router';
+import { Book } from '@/atoms/bookAtom';
 
 const Navbar: React.FC = () => {
   const [user, loading, error] = useAuthState(auth);
+  const [searcResults, setSearcResults] = useState<Book[]>([]);
+
+  const router = useRouter();
+
   return (
     <Flex
       bg="dark"
@@ -30,12 +36,18 @@ const Navbar: React.FC = () => {
           _dark={{ bg: 'lightYellow', color: 'dark' }}
           display={{ base: 'none', sm: 'unset' }}
           whiteSpace="nowrap"
+          onClick={() => router.push('/')}
+          cursor="pointer"
         >
           BookClub
         </Heading>
         <Library user={user} />
       </Flex>
-      <SearchInput user={user} />
+      <SearchInput
+        user={user}
+        navbar={true}
+        setSearchResults={setSearcResults}
+      />
       <RightContent user={user} />
       {/* <DarkModeSwitch /> */}
     </Flex>

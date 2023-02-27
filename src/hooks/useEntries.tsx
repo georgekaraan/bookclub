@@ -139,11 +139,23 @@ const useEntries = () => {
         const imageRef = ref(storage, `entries/${entry.id}/image`);
         await deleteObject(imageRef);
       }
-
       // delete entry itself
-
       const entryDocRef = doc(firestore, 'entries', entry.id!);
       await deleteDoc(entryDocRef);
+
+      // delete comments for entry
+      const commentsQueryRef = query(
+        collection(firestore, 'comments'),
+        where('entryId', '==', entry.id!)
+      );
+      const commentsQuerySnapshot = await getDocs(commentsQueryRef);
+
+      const deleteCommentPromises = commentsQuerySnapshot.docs.map((item) => {
+        const commentDocRef = doc(firestore, 'comments', item.id);
+        return deleteDoc(commentDocRef);
+      });
+
+      await Promise.all(deleteCommentPromises);
 
       setEntryStateValue((prev) => ({
         ...prev,

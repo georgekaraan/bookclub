@@ -9,14 +9,16 @@ export interface BookClub {
     numberOfBooks: number,
     privacyType: 'public' | 'private',
     imageURL?: string,
-    members: string[]
+    currentBookId?: string,
+
 }
 
 export interface BcSnippet {
     bookClubId: string,
     isModerator?: boolean,
     isOwner?: boolean,
-    imageURL?: string
+    imageURL?: string,
+    currentBookId?: string
 }
 
 interface BookClubState {

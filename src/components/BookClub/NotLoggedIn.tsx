@@ -15,7 +15,7 @@ const NotLoggedIn: React.FC = () => {
   return (
     <Flex flexDirection="column" justify="center" align="center" minH="50vh">
       This is a private bookclub. Log In to view content.
-      <Button onClick={handleLogIn} mt={4}>
+      <Button variant="light" onClick={handleLogIn} mt={4}>
         Log In
       </Button>
     </Flex>

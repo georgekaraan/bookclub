@@ -20,10 +20,13 @@ import {
   doc,
   getCountFromServer,
   getDoc,
+  query,
   runTransaction,
   serverTimestamp,
-  setDoc
+  setDoc,
+  where
 } from 'firebase/firestore';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -45,6 +48,8 @@ const CreateBookClub: React.FC<CreateBookClubProps> = ({
   useEffect(() => {
     setError('');
   }, []);
+
+  const router = useRouter();
 
   function bookClubName({ target: { value } }: { target: { value: string } }) {
     setBcName(
@@ -77,9 +82,9 @@ const CreateBookClub: React.FC<CreateBookClubProps> = ({
 
     try {
       const bookClubDocRef = doc(firestore, 'bookclubs', bcName);
-      const userBcSnippetsRef = collection(
-        firestore,
-        `users/${user?.uid}/bcSnippets`
+      const userBcSnippetsRef = query(
+        collection(firestore, `users/${user?.uid}/bcSnippets`),
+        where('isOwner', '==', true)
       );
 
       await runTransaction(firestore, async (transaction) => {
@@ -100,18 +105,19 @@ const CreateBookClub: React.FC<CreateBookClubProps> = ({
           createdAt: serverTimestamp(),
           numberOfMembers: 1,
           numberOfBooks: 0,
-          privacyType: bcType,
-          members: [user?.uid]
+          privacyType: bcType
         });
 
         transaction.set(
           doc(firestore, `users/${user?.uid}/bcSnippets`, bcName),
           {
             bookClubId: bcName,
-            isModerator: true
+            isOwner: true
           }
         );
       });
+      handleClose();
+      router.push(`/bc/${bcName}`);
     } catch (error: any) {
       console.log('handleCreateBC', error);
       setError(error.message);
@@ -120,7 +126,7 @@ const CreateBookClub: React.FC<CreateBookClubProps> = ({
   };
 
   return (
-    <Modal size={'2xl'} isOpen={open} onClose={handleClose}>
+    <Modal size={'2xl'} isOpen={open} onClose={handleClose} isCentered>
       <ModalOverlay />
       <ModalContent borderRadius="0%">
         <ModalHeader

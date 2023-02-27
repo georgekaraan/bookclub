@@ -1,4 +1,4 @@
-import { auth } from '@/firebase/clientApp';
+import { auth, firestore } from '@/firebase/clientApp';
 import {
   chakra,
   Flex,
@@ -11,15 +11,17 @@ import {
   Text
 } from '@chakra-ui/react';
 import { signOut } from 'firebase/auth';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BiLike, BiLogOut } from 'react-icons/bi';
-import { SiDarkreader } from 'react-icons/si';
+import { FaBookReader } from 'react-icons/fa';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { User } from 'firebase/auth';
 import { useResetRecoilState } from 'recoil';
 import { bookClubState } from '@/atoms/bookClubsAtom';
 import { useRouter } from 'next/router';
+import { doc, getDoc } from 'firebase/firestore';
+import useUser from '@/hooks/useUser';
 
 type UserMenuProps = {
   user?: User | null;
@@ -27,6 +29,8 @@ type UserMenuProps = {
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const router = useRouter();
+
+  const { userName } = useUser();
 
   const resetBcState = useResetRecoilState(bookClubState);
   const logout = async () => {
@@ -83,7 +87,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                 _hover={{ color: 'dark' }}
                 boxSize={{ base: '24px', sm: '36px' }}
                 borderRadius={'50%'}
-                as={SiDarkreader}
+                as={FaBookReader}
               />
             </>
           </Flex>
@@ -92,7 +96,8 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
           {user && (
             <>
               <Text ml={2} fontWeight={'extrabold'}>
-                {user.displayName || user.email?.split('@')[0]}
+                {/* {user.displayName || user.email?.split('@')[0]} */}
+                {userName}
               </Text>
               <MenuDivider />
             </>

@@ -48,13 +48,17 @@ const Community: React.FC<CommunityProps> = ({ bcData }) => {
 
   useEffect(() => {
     getEntries();
-  }, []);
+  }, [bcData]);
 
   if (router.pathname.includes('entry')) {
     return (
       <>
         <Stack>
-          <Flex align="center">
+          <Flex
+            align="center"
+            cursor="pointer"
+            onClick={() => router.push(`/bc/${bcData.id}/community`)}
+          >
             <Icon as={IoIosArrowBack} />
             <Text>Back</Text>
           </Flex>

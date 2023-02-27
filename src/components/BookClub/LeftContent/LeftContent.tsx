@@ -8,9 +8,11 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { useRouter } from 'next/router';
-import CurrentlyReading from './CurrentlyReading';
+import CurrentlyReading from './Books/CurrentlyReading';
 import Community from './Community/Community';
 import { BookClub } from '@/atoms/bookClubsAtom';
+import CurrentBookTimeline from './Books/CurrentBook';
+import Library from './Library/Library';
 
 type LeftContentProps = {
   tab: number;
@@ -42,23 +44,27 @@ const LeftContent: React.FC<LeftContentProps> = ({ tab, bcData }) => {
       >
         <TabList>
           <Tab onClick={() => onClick('')}>Current Book</Tab>
-          <Tab onClick={() => onClick('progress')}>Progress</Tab>
+          <Tab onClick={() => onClick('library')}>Library</Tab>
           <Tab onClick={() => onClick('community')}>Community</Tab>
           <Tab onClick={() => onClick('quotes')}>Quotes</Tab>
           <Tab onClick={() => onClick('poll')}>Poll</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
-            <CurrentlyReading />
+            {/* <CurrentlyReading /> */}
+            <CurrentBookTimeline />
+          </TabPanel>
+          <TabPanel>
+            <Library />
+          </TabPanel>
+          <TabPanel>
+            <Community bcData={bcData} />
+          </TabPanel>
+          <TabPanel>
+            <Community bcData={bcData} />
           </TabPanel>
           <TabPanel>
             <p>two!</p>
-          </TabPanel>
-          <TabPanel>
-            <Community bcData={bcData} />
-          </TabPanel>
-          <TabPanel>
-            <Community bcData={bcData} />
           </TabPanel>
           <TabPanel>
             <p>two!</p>

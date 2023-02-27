@@ -1,54 +1,39 @@
 import { Entry, entryState } from '@/atoms/entryAtom';
+import DeleteEntryModal from '@/components/Modal/Entry/DeleteEntryModal';
+import { DeleteIcon } from '@chakra-ui/icons';
 import {
-  Flex,
-  Image,
-  Grid,
-  Icon,
-  Text,
-  Heading,
-  GridItem,
   chakra,
   Divider,
-  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Icon,
+  Image,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   Skeleton,
+  Text,
   useDisclosure,
-  Alert,
-  AlertIcon,
-  useToast,
-  Box
+  useToast
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import {
-  BsFillBookmarkFill,
-  BsBookmarkCheck,
-  BsBookmarkFill,
-  BsPatchMinus,
-  BsPatchMinusFill,
-  BsFillBookmarkCheckFill
-} from 'react-icons/bs';
-import {
-  TbFiretruck,
-  TbWorldLongitude,
-  TbHandMiddleFinger,
-  TbThumbUp,
-  TbThumbDown
-} from 'react-icons/tb';
-import { HiOutlineTrash } from 'react-icons/hi';
-import { AiOutlineWarning } from 'react-icons/ai';
-import { GrMoreVertical } from 'react-icons/gr';
-import { BiCommentDetail } from 'react-icons/bi';
 import moment from 'moment';
-import { ChevronDownIcon, DeleteIcon } from '@chakra-ui/icons';
-import { IoShareSocialOutline } from 'react-icons/io5';
-import DeleteEntryModal from '@/components/Modal/Entry/DeleteEntryModal';
-import { useRecoilState, useRecoilValue } from 'recoil';
 import { useRouter } from 'next/router';
-import { doc, getDoc } from 'firebase/firestore';
-import { firestore } from '@/firebase/clientApp';
+import React, { useState } from 'react';
+import { BiCommentDetail } from 'react-icons/bi';
+import {
+  BsBookmarkCheck,
+  BsFillBookmarkCheckFill,
+  BsFillBookmarkFill,
+  BsPatchMinus,
+  BsPatchMinusFill
+} from 'react-icons/bs';
+import { GrMoreVertical } from 'react-icons/gr';
+import { IoShareSocialOutline } from 'react-icons/io5';
+import { TbFiretruck, TbWorldLongitude } from 'react-icons/tb';
+import { useRecoilValue } from 'recoil';
 
 type EntryItemProps = {
   entry: Entry;
@@ -209,27 +194,17 @@ const EntryItem: React.FC<EntryItemProps> = ({
                 </>
               )}
             </Flex>
-            {/* <Icon
-            fontSize="24px"
-            as={HiOutlineTrash}
-            cursor="pointer"
-            onClick={onVote}
-            // alignSelf="flex-end"
-            // justifySelf="flex-end"
-          /> */}
           </GridItem>
           <GridItem mx="12px" display="grid">
             <Flex direction="column" justify="center">
               {error &&
                 toast({
-                  render: () => (
-                    <Box color="white" p={2} bg="gray.500">
-                      <Flex justify="center" align="center" gap={1}>
-                        <Icon as={AiOutlineWarning} />
-                        <Text>{error}</Text>
-                      </Flex>
-                    </Box>
-                  )
+                  isClosable: true,
+                  position: 'bottom',
+                  title: 'Error',
+                  colorScheme: 'blackAlpha',
+                  variant: 'subtle',
+                  description: error
                 })}
               <Heading size={'md'} mt="12px">
                 {entry.title}

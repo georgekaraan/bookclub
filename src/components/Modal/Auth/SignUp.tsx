@@ -122,7 +122,7 @@ const SignUp: React.FC = () => {
           Sign Up
         </Button>
         <Flex fontSize={'9pt'} justifyContent="center">
-          <Text mr={1}>Already a friend?</Text>
+          <Text mr={1}>Already a reader?</Text>
           <Text
             color={'blue.500'}
             fontWeight="700"

@@ -1,6 +1,7 @@
 import { Entry, entryState } from '@/atoms/entryAtom';
 import { firestore, storage } from '@/firebase/clientApp';
 import useSelectFile from '@/hooks/useSelectFile';
+import useUser from '@/hooks/useUser';
 import { CloseIcon } from '@chakra-ui/icons';
 import {
   Alert,
@@ -55,6 +56,7 @@ const AddEntryFull: React.FC<AddEntryFullProps> = ({
     body: ''
   });
   // const [selectedFile, setSelectedFile] = useState<string>();
+  const { userName } = useUser();
 
   const { onSelectFile, selectedFile, setSelectedFile } = useSelectFile();
 
@@ -69,7 +71,7 @@ const AddEntryFull: React.FC<AddEntryFullProps> = ({
       creatorId: user?.uid,
       title: textInputs.title,
       body: textInputs.body,
-      creatorUserName: user?.displayName as string,
+      creatorUserName: userName,
       numberOfReplies: 0,
       numberOfVotes: 0,
       createdAt: serverTimestamp() as Timestamp

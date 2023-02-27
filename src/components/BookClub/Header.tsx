@@ -1,5 +1,13 @@
 import { BookClub, bookClubState } from '@/atoms/bookClubsAtom';
-import { Text, Box, Flex, Icon, Image, Button } from '@chakra-ui/react';
+import {
+  Text,
+  Box,
+  Flex,
+  Icon,
+  Image,
+  Button,
+  useToast
+} from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { BsBookFill } from 'react-icons/bs';
 import useBookClubData from '@/hooks/useBookClubData';
@@ -7,9 +15,11 @@ import { AiTwotoneLock } from 'react-icons/ai';
 import { RxEyeOpen } from 'react-icons/rx';
 import useSelectFile from '@/hooks/useSelectFile';
 import { doc, updateDoc } from 'firebase/firestore';
-import { firestore, storage } from '@/firebase/clientApp';
+import { auth, firestore, storage } from '@/firebase/clientApp';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 type HeaderProps = {
   bcData: BookClub;
@@ -19,11 +29,13 @@ const Header: React.FC<HeaderProps> = ({ bcData }) => {
   const { onSelectFile, setSelectedFile, selectedFile } = useSelectFile();
   const inputRef = useRef<HTMLInputElement>(null);
   const { bcStateValue, onJoinorLeaveBookClub, loading } = useBookClubData();
+  const [user] = useAuthState(auth);
   const isMember = !!bcStateValue.mySnippets.find(
     (item) => item.bookClubId === bcData.id
   );
   const [memberCount, setMemberCount] = useState(bcData.numberOfMembers);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const toast = useToast();
 
   const { getMembers } = useBookClubData();
 
@@ -31,6 +43,18 @@ const Header: React.FC<HeaderProps> = ({ bcData }) => {
   const currentBc = useRecoilValue(bookClubState);
 
   const onJoinOrLeave = () => {
+    if (user?.uid === bcData.creatorId && isMember) {
+      toast({
+        isClosable: true,
+        position: 'bottom',
+        title: 'Cannot Abandon Bookclub!',
+        colorScheme: 'blackAlpha',
+        variant: 'subtle',
+        description:
+          "You've created this bookclub. You can only leave by deleting it in your profile settings 🥹"
+      });
+      return;
+    }
     const result = onJoinorLeaveBookClub(bcData, isMember);
     if (result == 1) setMemberCount((prev) => prev + 1);
     if (result == -1) setMemberCount((prev) => prev - 1);
@@ -74,8 +98,10 @@ const Header: React.FC<HeaderProps> = ({ bcData }) => {
             {currentBc.currentBC?.imageURL ? (
               <Image
                 maxW="100px"
-                maxH="100px"
-                borderRadius="50%"
+                // w="100px"
+                h="100px"
+                // maxH="100px"
+                borderRadius="full"
                 src={currentBc.currentBC?.imageURL}
               />
             ) : (
@@ -125,14 +151,13 @@ const Header: React.FC<HeaderProps> = ({ bcData }) => {
               </Text>
             </Flex>
 
-            {/* {bcData.creatorId === user} */}
             <Button
               variant={isMember ? 'outline' : 'light'}
-              border={isMember ? '1px solid' : 'none'}
+              border={isMember ? '1px solid' : '1px solid'}
               height="36px"
-              px={5}
+              px={3}
               onClick={onJoinOrLeave}
-              // isLoading={loading}
+              isLoading={loading}
             >
               {isMember
                 ? 'Member'
@@ -140,7 +165,6 @@ const Header: React.FC<HeaderProps> = ({ bcData }) => {
                 ? 'Join'
                 : 'Request Access'}
             </Button>
-            {/* <Button onClick={() => getMembers(bcData)}>TEST</Button> */}
           </Flex>
         </Flex>
       </Flex>

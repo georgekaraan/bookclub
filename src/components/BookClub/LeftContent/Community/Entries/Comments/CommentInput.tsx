@@ -1,4 +1,5 @@
 import AuthButtons from '@/components/Navbar/RightContent/AuthButtons';
+import useUser from '@/hooks/useUser';
 import { Flex, Textarea, Button, Text } from '@chakra-ui/react';
 import { User } from 'firebase/auth';
 import React from 'react';
@@ -18,15 +19,14 @@ const CommentInput: React.FC<CommentInputProps> = ({
   createLoading,
   onCreateComment
 }) => {
+  const { userName } = useUser();
   return (
     <Flex direction="column" position="relative">
       {user ? (
         <>
           <Text ml={3} mb={1}>
             Comment as{' '}
-            <span style={{ color: '', fontWeight: 'bold' }}>
-              {user?.displayName}
-            </span>
+            <span style={{ color: '', fontWeight: 'bold' }}>{userName}</span>
           </Text>
           <Textarea
             value={commentText}
@@ -70,9 +70,12 @@ const CommentInput: React.FC<CommentInputProps> = ({
           border="1px solid"
           borderColor="gray.100"
           p={4}
+          mb={4}
         >
           <Text fontWeight={600}>Log in or sign up to leave a comment</Text>
-          <AuthButtons />
+          <Flex>
+            <AuthButtons />
+          </Flex>
         </Flex>
       )}
     </Flex>

@@ -1,0 +1,76 @@
+{
+  "kind": "books#volume",
+  "id": "ag5ongEACAAJ",
+  "etag": "EOkEzthpPZU",
+  "selfLink": "https://www.googleapis.com/books/v1/volumes/ag5ongEACAAJ",
+  "volumeInfo": {
+    "title": "1984",
+    "authors": [
+      "George Orwell"
+    ],
+    "publisher": "HarperCollins",
+    "publishedDate": "2014-03-25",
+    "description": "\u003cp\u003eIt is 1984, and the worlds' three major powers-Oceania, Eurasia and Eastasia-are constantly at war. In Oceania, where the Party is in power, the thought police unearth every act of dissent, and Big Brother is always watching. Winston Smith, a dutiful citizen of Oceania, works for the Ministry of Truth as a propaganda writer who rewrites history to suit the needs of the authoritarian government. But when Winston falls in love with fellow worker Julia, they begin to question the very system they work for, placing them in immense danger. Pursuing their forbidden love affair, Winston plans a rebellion against the Party in order to regain the freedom to shape his own future. But the ever-watchful Big Brother will not tolerate opposition, and for those who speak up against the system or dare to think what the Party does not want them to think, Room 101 awaits them . . .\u003c/p\u003e\u003cp\u003e1984 is George Orwell's haunting prophesy of the future, which has held multiple generations of readers spellbound in its chilling and terrifying vision of life under a totalitarian regime. Powerful and unforgettable, this still-relevant novel explores the obliteration of truth, individuality and liberty in a world where the ruling power seeks to control everything, from information to thought and memory.\u003c/p\u003e",
+    "industryIdentifiers": [
+      {
+        "type": "ISBN_10",
+        "identifier": "1443434973"
+      },
+      {
+        "type": "ISBN_13",
+        "identifier": "9781443434973"
+      }
+    ],
+    "readingModes": {
+      "text": false,
+      "image": false
+    },
+    "pageCount": 416,
+    "printedPageCount": 416,
+    "dimensions": {
+      "height": "20.30 cm",
+      "width": "13.50 cm",
+      "thickness": "2.40 cm"
+    },
+    "printType": "BOOK",
+    "categories": [
+      "Fiction / General"
+    ],
+    "maturityRating": "NOT_MATURE",
+    "allowAnonLogging": false,
+    "contentVersion": "preview-1.0.0",
+    "panelizationSummary": {
+      "containsEpubBubbles": false,
+      "containsImageBubbles": false
+    },
+    "imageLinks": {
+      "smallThumbnail": "http://books.google.com/books/content?id=ag5ongEACAAJ&printsec=frontcover&img=1&zoom=5&imgtk=AFLRE7273fDcf5xbVBecwfngGpZPbY-TQpRV3LR8B77rJZm26Gz1DOq8j4KUw26goTFVxLkmBqKwO9ZH_pbnAbqng1CoSq8mm2FnwwhZI6j4ibB21B4Ts99t6NbBuaP5iVqGS1zK0ha9&source=gbs_api",
+      "thumbnail": "http://books.google.com/books/content?id=ag5ongEACAAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE726Fc2qPfCoo9UL1_ZLwBaHlKF5XvGg_xbbJiWNN3Dr4Styv4k_Ou6gp3D5FX1_5oHsTlXnNnMpZEMaIzGZE6WmNj5CmDmJ21hScHTN0PswzLRuSU2DMS3S5CklOh3D5lAsZgwE&source=gbs_api"
+    },
+    "language": "en",
+    "previewLink": "http://books.google.com/books?id=ag5ongEACAAJ&hl=&source=gbs_api",
+    "infoLink": "https://play.google.com/store/books/details?id=ag5ongEACAAJ&source=gbs_api",
+    "canonicalVolumeLink": "https://play.google.com/store/books/details?id=ag5ongEACAAJ"
+  },
+  "saleInfo": {
+    "country": "US",
+    "saleability": "NOT_FOR_SALE",
+    "isEbook": false
+  },
+  "accessInfo": {
+    "country": "US",
+    "viewability": "NO_PAGES",
+    "embeddable": false,
+    "publicDomain": false,
+    "textToSpeechPermission": "ALLOWED",
+    "epub": {
+      "isAvailable": false
+    },
+    "pdf": {
+      "isAvailable": false
+    },
+    "webReaderLink": "http://play.google.com/books/reader?id=ag5ongEACAAJ&hl=&source=gbs_api",
+    "accessViewStatus": "NONE",
+    "quoteSharingAllowed": false
+  }
+}

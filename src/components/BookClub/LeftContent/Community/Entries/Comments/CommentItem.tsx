@@ -81,23 +81,25 @@ const CommentItem: React.FC<CommentItemProps> = ({
               color: 'dark'
             }}
           />
-          <Icon
-            as={FaEdit}
-            fontSize="16px"
-            _hover={{
-              transform: 'scale(1.2)',
-              color: 'dark'
-            }}
-          />
           {userId == comment.creatorId && (
-            <DeleteIcon
-              fontSize="16px"
-              _hover={{
-                transform: 'scale(1.2)',
-                color: 'dark'
-              }}
-              onClick={() => onDeleteComment(comment)}
-            />
+            <>
+              <Icon
+                as={FaEdit}
+                fontSize="16px"
+                _hover={{
+                  transform: 'scale(1.2)',
+                  color: 'dark'
+                }}
+              />
+              <DeleteIcon
+                fontSize="16px"
+                _hover={{
+                  transform: 'scale(1.2)',
+                  color: 'dark'
+                }}
+                onClick={() => onDeleteComment(comment)}
+              />
+            </>
           )}
         </Stack>
       </Stack>
