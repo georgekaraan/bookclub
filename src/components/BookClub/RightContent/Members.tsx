@@ -28,11 +28,9 @@ const Members: React.FC<MembersProps> = ({
   creator,
   isLoadingMembers
 }) => {
-  const { membersTest } = useBookClubData();
-
   useEffect(() => {
-    console.log('membersTest', membersTest);
-  }, []);
+    console.log('I have changedddd', members);
+  }, [members]);
 
   return (
     <Stack w={'100%'} direction="column" spacing={2}>
@@ -101,34 +99,35 @@ const Members: React.FC<MembersProps> = ({
             </>
           ) : null} */}
 
-          {members.length > 1 && (
+          {members && members.length > 1 && (
             <Heading size="sm" textAlign="center" textDecoration="underline">
               Members
             </Heading>
           )}
-          {members
-            .filter(
-              (member: Member) =>
-                member.userId != creator?.userId && !member.isModerator
-            )
-            .map((member: Member) => (
-              <Flex key={member.userId} align="center">
-                {member.image ? (
-                  <Image
-                    maxH="40px"
-                    w="40px"
-                    borderRadius="full"
-                    src={member.image}
-                  />
-                ) : (
-                  <Icon w="40px" h="40px" as={BsPersonCircle} color="dark" />
-                )}
+          {members &&
+            members
+              .filter(
+                (member: Member) =>
+                  member.userId != creator?.userId && !member.isModerator
+              )
+              .map((member: Member) => (
+                <Flex key={member.userId} align="center">
+                  {member.image ? (
+                    <Image
+                      maxH="40px"
+                      w="40px"
+                      borderRadius="full"
+                      src={member.image}
+                    />
+                  ) : (
+                    <Icon w="40px" h="40px" as={BsPersonCircle} color="dark" />
+                  )}
 
-                <Text ml="10px" fontSize="12pt">
-                  {member?.displayName || member.userId}
-                </Text>
-              </Flex>
-            ))}
+                  <Text ml="10px" fontSize="12pt">
+                    {member?.displayName || member.userId}
+                  </Text>
+                </Flex>
+              ))}
         </>
       )}
     </Stack>

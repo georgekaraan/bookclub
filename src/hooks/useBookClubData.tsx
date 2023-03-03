@@ -78,9 +78,21 @@ const useBookClubData = () => {
 
     if (isMember) {
       leaveBookClub(bcData.id);
+      setMembers((prev) => ({
+        ...prev,
+        members: members.filter((member) => member.userId != user.uid)
+      }));
       return -1;
     }
     joinBookClub(bcData);
+    // const newMember: Member = {
+    //   displayName: ,
+    //   image: ,
+    //   isModerator: ,
+    //   userId:
+    // }
+
+    // setMembers((prev) => ([...prev, newMember]))
     return 1;
   };
 
@@ -97,6 +109,8 @@ const useBookClubData = () => {
         ...prev,
         mySnippets: snippets as BcSnippet[]
       }));
+
+      console.log(snippets);
     } catch (error: any) {
       console.log('getMySnippets error', error);
       setError(error.message);
@@ -176,7 +190,7 @@ const useBookClubData = () => {
     onJoinorLeaveBookClub,
     loading,
     getMembers,
-    membersTest: members,
+    members,
     getMySnippets
   };
 };

@@ -6,12 +6,16 @@ import {
   Icon,
   Image,
   Button,
-  useToast
+  useToast,
+  IconButton,
+  Spinner,
+  VStack
 } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { BsBookFill } from 'react-icons/bs';
 import useBookClubData from '@/hooks/useBookClubData';
 import { AiTwotoneLock } from 'react-icons/ai';
+import { ImBooks } from 'react-icons/im';
 import { RxEyeOpen } from 'react-icons/rx';
 import useSelectFile from '@/hooks/useSelectFile';
 import { doc, updateDoc } from 'firebase/firestore';
@@ -19,7 +23,7 @@ import { auth, firestore, storage } from '@/firebase/clientApp';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { DeleteIcon } from '@chakra-ui/icons';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
 type HeaderProps = {
   bcData: BookClub;
@@ -33,6 +37,8 @@ const Header: React.FC<HeaderProps> = ({ bcData }) => {
   const isMember = !!bcStateValue.mySnippets.find(
     (item) => item.bookClubId === bcData.id
   );
+  const isCreator = user?.uid === bcData?.creatorId;
+
   const [memberCount, setMemberCount] = useState(bcData.numberOfMembers);
   const [uploadingImage, setUploadingImage] = useState(false);
   const toast = useToast();
@@ -61,7 +67,6 @@ const Header: React.FC<HeaderProps> = ({ bcData }) => {
   };
 
   const onUpdateImage = async () => {
-    inputRef.current?.click();
     if (!selectedFile) return;
 
     setUploadingImage(true);
@@ -90,41 +95,62 @@ const Header: React.FC<HeaderProps> = ({ bcData }) => {
   };
 
   return (
-    <Flex flexDirection={'column'} w="100%" h={'150px'}>
+    <Flex flexDirection={'column'} w="100%" h={'120px'}>
       {/* <Box height={'50%'} bgColor="gray.300" /> */}
       <Flex justify={'center'} align="center" bg="gray.200" flexGrow={1}>
         <Flex width={'95%'} maxW="1500px">
-          <Flex onClick={onUpdateImage}>
-            {currentBc.currentBC?.imageURL ? (
+          <Flex justify="center" align="center" position="relative">
+            {currentBc.currentBC?.imageURL || selectedFile ? (
               <Image
-                maxW="100px"
-                // w="100px"
-                h="100px"
-                // maxH="100px"
                 borderRadius="full"
-                src={currentBc.currentBC?.imageURL}
+                boxSize="80px"
+                src={selectedFile || currentBc.currentBC?.imageURL}
+                alt="Dan Abramov"
               />
             ) : (
-              <>
+              <Icon as={ImBooks} fontSize={88} color="dark" p="10px" />
+            )}
+            <Flex direction="column" gap="30px">
+              {isCreator && (
                 <Icon
-                  as={BsBookFill}
-                  fontSize={88}
-                  color="dark"
-                  p="10px"
+                  aria-label="Edit Photo"
+                  as={EditIcon}
+                  position="absolute"
+                  right="-10px"
+                  top="10px"
+                  onClick={() => inputRef.current?.click()}
                   cursor="pointer"
                 />
-                <input
-                  accept="image/*"
-                  type="file"
-                  ref={inputRef}
-                  hidden
-                  onChange={onSelectFile}
-                />
-              </>
-            )}
+              )}
+              <Flex position="absolute" bottom="-15px" right="-1px">
+                {selectedFile &&
+                  (uploadingImage ? (
+                    <Spinner />
+                  ) : (
+                    <Text
+                      border="1px solid"
+                      borderColor="dark"
+                      p="3px"
+                      bgColor="gray.50"
+                      cursor="pointer"
+                      onClick={onUpdateImage}
+                    >
+                      Save
+                    </Text>
+                  ))}
+              </Flex>
+              <input
+                accept="image/*"
+                type="file"
+                ref={inputRef}
+                hidden
+                onChange={onSelectFile}
+              />
+            </Flex>
           </Flex>
+
           <Flex p={'10px 16px'} align="center">
-            <Flex direction={'column'} mr={6}>
+            <Flex direction={'column'} mx={6}>
               <Text fontWeight={900} fontSize="16pt">
                 {bcData.id}
               </Text>
@@ -143,6 +169,8 @@ const Header: React.FC<HeaderProps> = ({ bcData }) => {
                     : ''}
                 </Text>
               </Flex>
+            </Flex>
+            <Flex direction={'column'} mx={6}>
               <Text fontWeight={500} fontSize="11pt">
                 No. of Members: {memberCount && memberCount}
               </Text>

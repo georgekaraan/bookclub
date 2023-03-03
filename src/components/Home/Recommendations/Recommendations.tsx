@@ -23,7 +23,7 @@ import {
 } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { BsBook } from 'react-icons/bs';
-import { FaReddit } from 'react-icons/fa';
+import { ImBooks } from 'react-icons/im';
 
 type RecommendationsProps = {
   filter: string;
@@ -135,7 +135,7 @@ const Recommendations: React.FC<RecommendationsProps> = ({ filter }) => {
                                 mr={2}
                               />
                             ) : (
-                              <Icon as={BsBook} fontSize={25} mr={2} />
+                              <Icon as={ImBooks} fontSize={25} mr={2} />
                             )}
                             <span
                               style={{

@@ -3,6 +3,7 @@ import { Flex, Icon, Image, MenuDivider, MenuItem } from '@chakra-ui/react';
 import Link from 'next/link';
 import React from 'react';
 import { BsBook } from 'react-icons/bs';
+import { ImBooks } from 'react-icons/im';
 
 type LibraryItemsProps = {
   bc: BcSnippet;
@@ -21,7 +22,7 @@ const LibraryItems: React.FC<LibraryItemsProps> = ({ bc }) => {
           {bc.imageURL ? (
             <Image src={bc.imageURL} mr={2} w="30px" maxH="38px" />
           ) : (
-            <Icon as={BsBook} mr={2} w="30px" maxH="38px" />
+            <Icon as={ImBooks} mr={2} w="30px" maxH="38px" />
           )}
           {bc.bookClubId}
         </Flex>

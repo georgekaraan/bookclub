@@ -25,20 +25,20 @@ export interface Member {
 }
 
 const RightContent: React.FC<RightContentProps> = ({ bcData }) => {
-  const [members, setMembers] = useState<Member[]>([]);
+  // const [members, setMembers] = useState<Member[]>([]);
   const [creator, setCreator] = useState<Member>();
   const [isLoadingMembers, setIsLoadingMembers] = useState(false);
 
-  const { getMembers, membersTest } = useBookClubData();
+  const { getMembers, members } = useBookClubData();
 
   useEffect(() => {
     async function fetchMembers() {
       setIsLoadingMembers(true);
-      const memberUsers = await getMembers(bcData);
-      setMembers(memberUsers);
+      await getMembers(bcData);
+      // const memberUsers = await getMembers(bcData);
+      // setMembers(memberUsers);
       setIsLoadingMembers(false);
     }
-
     fetchMembers();
   }, [bcData]);
 
