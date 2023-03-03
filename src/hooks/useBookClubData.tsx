@@ -25,6 +25,8 @@ const useBookClubData = () => {
   const [error, setError] = useState('');
   const setAuthModalState = useSetRecoilState(authModalState);
 
+  const [members, setMembers] = useState<Member[]>([]);
+
   const getMembers = async (bcData: BookClub) => {
     const bcSnippetsRef = collectionGroup(firestore, 'bcSnippets');
     const q = query(bcSnippetsRef, where('bookClubId', '==', bcData.id));
@@ -62,6 +64,8 @@ const useBookClubData = () => {
     const filteredMembers = memberUsers.filter(
       (member) => member?.userId !== null
     ) as Member[];
+
+    setMembers(filteredMembers);
 
     return filteredMembers;
   };
@@ -172,6 +176,7 @@ const useBookClubData = () => {
     onJoinorLeaveBookClub,
     loading,
     getMembers,
+    membersTest: members,
     getMySnippets
   };
 };

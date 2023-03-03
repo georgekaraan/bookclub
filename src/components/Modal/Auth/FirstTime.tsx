@@ -64,6 +64,13 @@ const FirstTime: React.FC<FirstTimeProps> = () => {
       });
 
       setSuccess(true);
+
+      if (!user?.emailVerified) {
+        return setAuthModalState((prev) => ({
+          ...prev,
+          view: 'verifyEmail'
+        }));
+      }
       setAuthModalState((prev) => ({
         ...prev,
         open: false

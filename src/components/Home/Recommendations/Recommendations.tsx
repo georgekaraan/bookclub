@@ -25,17 +25,22 @@ import React, { useEffect, useState } from 'react';
 import { BsBook } from 'react-icons/bs';
 import { FaReddit } from 'react-icons/fa';
 
-const NumMembersRecommendation: React.FC = () => {
+type RecommendationsProps = {
+  filter: string;
+};
+
+const Recommendations: React.FC<RecommendationsProps> = ({ filter }) => {
   const [bookclubs, setBookclubs] = useState<BookClub[]>([]);
   const [loading, setLoading] = useState(false);
   const { bcStateValue, onJoinorLeaveBookClub } = useBookClubData();
 
   const getBCRecommendations = async () => {
     setLoading(true);
+
     try {
       const bookclubQuery = query(
         collection(firestore, 'bookclubs'),
-        orderBy('numberOfMembers', 'desc'),
+        orderBy(filter, 'desc'),
         limit(5)
       );
 
@@ -54,6 +59,7 @@ const NumMembersRecommendation: React.FC = () => {
 
   useEffect(() => {
     getBCRecommendations();
+    console.log('filter:', filter);
   }, []);
 
   return (
@@ -66,22 +72,22 @@ const NumMembersRecommendation: React.FC = () => {
           // cursor="pointer"
           border="1px solid"
           borderColor="gray.300"
-          w="400px"
+          w="300px"
         >
           <Flex
-            align="flex-end"
-            color="white"
-            p="6px 10px"
-            bg="blue.500"
-            height="70px"
-            borderRadius="4px 4px 0px 0px"
+            align="center"
+            justify="center"
+            // p="6px 10px"
+            bg="gray.200"
+            height="40px"
+            borderRadius="0px"
             fontWeight={600}
-            // bgImage="url(/images/recCommsArt.png)"
-            // backgroundSize="cover"
-            // bgGradient="linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75)),
-            //   url('images/recCommsArt.png')"
+            w="100%"
+            textAlign="center"
           >
-            Top Communities - No. of Members
+            {filter == 'numberOfMembers'
+              ? 'No. of Members'
+              : filter == 'numberOfBooks' && 'No. of Books Read'}
           </Flex>
           <Flex direction="column">
             {loading ? (
@@ -129,12 +135,7 @@ const NumMembersRecommendation: React.FC = () => {
                                 mr={2}
                               />
                             ) : (
-                              <Icon
-                                as={FaReddit}
-                                fontSize={30}
-                                color="brand.100"
-                                mr={2}
-                              />
+                              <Icon as={BsBook} fontSize={25} mr={2} />
                             )}
                             <span
                               style={{
@@ -148,27 +149,26 @@ const NumMembersRecommendation: React.FC = () => {
                           </Flex>
                         </Flex>
                         <Box position="absolute" right="10px">
-                          <Button
+                          {/* <Button
                             height="22px"
                             fontSize="8pt"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              onJoinorLeaveBookClub(item, isJoined);
-                            }}
+                            onClick={(event) => (
+                              event.stopPropagation(),
+                              onJoinorLeaveBookClub(item, isJoined)
+                            )}
                             variant={isJoined ? 'outline' : 'solid'}
                           >
                             {isJoined ? 'Joined' : 'Join'}
-                          </Button>
+                          </Button> */}
+
+                          {filter == 'numberOfMembers'
+                            ? item.numberOfMembers
+                            : filter == 'numberOfBooks' && item.numberOfBooks}
                         </Box>
                       </Flex>
                     </Link>
                   );
                 })}
-                <Box p="10px 20px">
-                  <Button height="30px" width="100%">
-                    View All
-                  </Button>
-                </Box>
               </>
             )}
           </Flex>
@@ -177,4 +177,4 @@ const NumMembersRecommendation: React.FC = () => {
     </>
   );
 };
-export default NumMembersRecommendation;
+export default Recommendations;

@@ -1,8 +1,10 @@
 import { auth, firestore } from '@/firebase/clientApp';
 import {
-  Text,
   Box,
   Button,
+  Checkbox,
+  HStack,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -10,20 +12,16 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Input,
   Stack,
-  Checkbox,
-  HStack
+  Text
 } from '@chakra-ui/react';
 import {
   collection,
   doc,
   getCountFromServer,
-  getDoc,
   query,
   runTransaction,
   serverTimestamp,
-  setDoc,
   where
 } from 'firebase/firestore';
 import { useRouter } from 'next/router';

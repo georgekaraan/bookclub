@@ -15,22 +15,14 @@ type PageProps = {
 const Page: React.FC<PageProps> = ({ children }) => {
   return (
     <Flex justify="center" padding="10px 0px">
-      <Flex
-        w={'95%'}
-        justify="space-between"
-        maxW={'1500px'}
-        // border="1px solid green"
-      >
-        {/* Main Content */}
+      <Flex w={'95%'} justify="space-between" maxW={'1500px'}>
         <Flex
           direction="column"
           w={{ base: '100%', lg: '75%' }}
           mr={{ base: 0, lg: 6 }}
-          // border="2px solid green"
         >
           {children && children[0 as keyof typeof children]}
         </Flex>
-        {/* Members */}
         <Flex
           direction="column"
           display={{ base: 'none', lg: 'flex' }}

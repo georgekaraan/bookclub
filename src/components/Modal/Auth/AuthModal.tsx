@@ -19,6 +19,8 @@ import ResetPassword from './ResetPassword';
 import { useRouter } from 'next/router';
 import FirstTime from './FirstTime';
 import { doc, getDoc } from 'firebase/firestore';
+import LoadingAuth from './LoadingAuth';
+import VerifyEmail from './VerifyEmail';
 
 const AuthModal: React.FC = () => {
   const [modalState, setModalState] = useRecoilState(authModalState);
@@ -30,6 +32,7 @@ const AuthModal: React.FC = () => {
       open: false
     }));
   };
+
   const handleFirstTime = () => {
     setModalState((prev) => ({
       ...prev,
@@ -56,14 +59,6 @@ const AuthModal: React.FC = () => {
   useEffect(() => {
     if (user) {
       checkFirstLogin();
-      // auth.currentUser?.getIdTokenResult().then((idTokenResult) => {
-      //   console.log(idTokenResult);
-      //   if (idTokenResult.claims.firstLogin) {
-      //     handleFirstTime();
-      //   } else {
-      //     handleClose();
-      //   }
-      // });
     }
   }, [user, loading]);
 
@@ -90,8 +85,11 @@ const AuthModal: React.FC = () => {
             {modalState.view === 'signup' && 'Sign Up'}{' '}
             {modalState.view === 'resetPassword' && 'Reset Password'}
             {modalState.view === 'firstTime' && 'Welcome to the BookClub!'}
+            {modalState.view === 'verifyEmail' && 'Please check your inbox!'}
           </ModalHeader>
-          {!(modalState.view === 'firstTime') && <ModalCloseButton />}
+          {!(modalState.view === 'firstTime') &&
+            !(modalState.view === 'verifyEmail') &&
+            !(modalState.view === 'loading') && <ModalCloseButton />}
           <ModalBody
             display={'flex'}
             flexDirection="column"
@@ -113,6 +111,10 @@ const AuthModal: React.FC = () => {
                 </>
               ) : modalState.view == 'resetPassword' ? (
                 <ResetPassword toggleView={toggleView} />
+              ) : modalState.view == 'loading' ? (
+                <LoadingAuth />
+              ) : modalState.view == 'verifyEmail' ? (
+                <VerifyEmail />
               ) : (
                 <FirstTime />
               )}

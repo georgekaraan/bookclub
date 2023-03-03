@@ -1,13 +1,12 @@
-import { Flex, Heading, Image } from '@chakra-ui/react';
+import { Book } from '@/atoms/bookAtom';
+import { auth } from '@/firebase/clientApp';
+import { Flex, Heading } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import DarkModeSwitch from './DarkModeSwitch';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import Library from './Library/Library';
 import RightContent from './RightContent/RightContent';
 import SearchInput from './SearchInput';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '@/firebase/clientApp';
-import Library from './Library';
-import { useRouter } from 'next/router';
-import { Book } from '@/atoms/bookAtom';
 
 const Navbar: React.FC = () => {
   const [user, loading, error] = useAuthState(auth);
@@ -25,11 +24,6 @@ const Navbar: React.FC = () => {
       justifyContent={'space-between'}
     >
       <Flex alignItems={'center'} gap="0.5em" _dark={{ bg: 'lightYellow' }}>
-        {/* <Image
-          src="/images/Lex-Face.png"
-          height="42px"
-          _dark={{ bg: 'lightYellow' }}
-        /> */}
         <Heading
           size={{ sm: 'sm', md: 'md' }}
           color={'lightYellow'}
@@ -49,7 +43,6 @@ const Navbar: React.FC = () => {
         setSearchResults={setSearcResults}
       />
       <RightContent user={user} />
-      {/* <DarkModeSwitch /> */}
     </Flex>
   );
 };

@@ -1,3 +1,4 @@
+import useBookClubData from '@/hooks/useBookClubData';
 import {
   Flex,
   Heading,
@@ -12,7 +13,7 @@ import {
   Stack,
   Text
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BsPersonCircle } from 'react-icons/bs';
 import { Member } from './RightContent';
 
@@ -27,6 +28,12 @@ const Members: React.FC<MembersProps> = ({
   creator,
   isLoadingMembers
 }) => {
+  const { membersTest } = useBookClubData();
+
+  useEffect(() => {
+    console.log('membersTest', membersTest);
+  }, []);
+
   return (
     <Stack w={'100%'} direction="column" spacing={2}>
       {isLoadingMembers ? (
@@ -59,7 +66,7 @@ const Members: React.FC<MembersProps> = ({
             </Text>
           </Flex>
 
-          {members.filter((member: Member) => member.isModerator).length !=
+          {/* {members.filter((member: Member) => member.isModerator).length !=
           0 ? (
             <>
               <Heading size="sm" textAlign="center" textDecoration="underline">
@@ -92,11 +99,13 @@ const Members: React.FC<MembersProps> = ({
                   </Flex>
                 ))}
             </>
-          ) : null}
+          ) : null} */}
 
-          <Heading size="sm" textAlign="center" textDecoration="underline">
-            Members
-          </Heading>
+          {members.length > 1 && (
+            <Heading size="sm" textAlign="center" textDecoration="underline">
+              Members
+            </Heading>
+          )}
           {members
             .filter(
               (member: Member) =>

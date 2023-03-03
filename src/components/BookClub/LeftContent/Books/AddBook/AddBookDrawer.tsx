@@ -2,12 +2,8 @@ import { Book } from '@/atoms/bookAtom';
 import SearchInput from '@/components/Navbar/SearchInput';
 import { auth } from '@/firebase/clientApp';
 import {
-  Badge,
   Box,
   Button,
-  Card,
-  CardBody,
-  CardHeader,
   Center,
   Drawer,
   DrawerBody,

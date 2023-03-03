@@ -1,6 +1,6 @@
 import { authModalState } from '@/atoms/authModalAtom';
 import { Button, Flex, Input, Text } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from '../../../firebase/clientApp';
@@ -18,10 +18,10 @@ const Login: React.FC<LoginProps> = () => {
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    signInWithEmailAndPassword(loginForm.email, loginForm.password);
+    await signInWithEmailAndPassword(loginForm.email, loginForm.password);
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +30,21 @@ const Login: React.FC<LoginProps> = () => {
       [event.target.name]: event.target.value
     }));
   };
+
+  useEffect(() => {
+    if (user) {
+      setAuthModalState((prev) => ({
+        ...prev,
+        view: 'firstTime'
+      }));
+    }
+    if (loading) {
+      setAuthModalState((prev) => ({
+        ...prev,
+        view: 'loading'
+      }));
+    }
+  }, [user, loading]);
 
   return (
     <>

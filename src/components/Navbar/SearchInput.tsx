@@ -33,7 +33,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
   };
 
   const handleSearch = async () => {
-    const response = await fetch(`/api/books/searchOL?q=${searchText}`, {
+    const response = await fetch(`/api/books/search?q=${searchText}`, {
       method: 'GET'
     });
     const data = await response.json();

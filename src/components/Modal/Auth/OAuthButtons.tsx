@@ -1,13 +1,25 @@
+import { authModalState } from '@/atoms/authModalAtom';
 import { Button, Flex, Image, Text } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useSignInWithGithub } from 'react-firebase-hooks/auth';
+import { useSetRecoilState } from 'recoil';
 import { auth } from '../../../firebase/clientApp';
 
 const OAuthButtons: React.FC = () => {
   const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
   const [signInWithGithub, ghUser, ghLoading, ghError] =
     useSignInWithGithub(auth);
+  const setAuthModalState = useSetRecoilState(authModalState);
+
+  useEffect(() => {
+    if (loading) {
+      setAuthModalState((prev) => ({
+        ...prev,
+        view: 'loading'
+      }));
+    }
+  }, [loading]);
 
   return (
     <Flex direction={'column'} mb={4} w="100%">

@@ -29,7 +29,7 @@ const RightContent: React.FC<RightContentProps> = ({ bcData }) => {
   const [creator, setCreator] = useState<Member>();
   const [isLoadingMembers, setIsLoadingMembers] = useState(false);
 
-  const { getMembers } = useBookClubData();
+  const { getMembers, membersTest } = useBookClubData();
 
   useEffect(() => {
     async function fetchMembers() {

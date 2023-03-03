@@ -1,10 +1,11 @@
 import { authModalState } from '@/atoms/authModalAtom';
 import { Input, Button, Flex, Text } from '@chakra-ui/react';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from '@/firebase/clientApp';
 import { FIREBASE_ERRORS } from '@/firebase/errors';
+import { sendEmailVerification } from 'firebase/auth';
 
 const SignUp: React.FC = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
@@ -17,7 +18,7 @@ const SignUp: React.FC = () => {
   const [createUserWithEmailAndPassword, user, loading, userError] =
     useCreateUserWithEmailAndPassword(auth);
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log('Submitting');
 
@@ -26,11 +27,17 @@ const SignUp: React.FC = () => {
       setError('Passwords do not match!');
       return;
     }
-    console.log(user, loading, userError);
-    console.log('I am the auth', auth);
-
-    createUserWithEmailAndPassword(signUpForm.email, signUpForm.password);
+    const status = await createUserWithEmailAndPassword(
+      signUpForm.email,
+      signUpForm.password
+    );
+    status?.user && sendEmailVerification(status?.user!);
+    setAuthModalState((prev) => ({
+      ...prev,
+      view: 'firstTime'
+    }));
   };
+
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log([event.target.name], event.target.value);
 
@@ -39,6 +46,15 @@ const SignUp: React.FC = () => {
       [event.target.name]: event.target.value
     }));
   };
+
+  useEffect(() => {
+    if (loading) {
+      setAuthModalState((prev) => ({
+        ...prev,
+        view: 'loading'
+      }));
+    }
+  }, [loading]);
 
   return (
     <>
