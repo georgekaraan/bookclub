@@ -17,7 +17,12 @@ const BookClubLibraryPage: React.FC<BookClubLibraryProps> = ({
   if (!bookClubData) {
     return <NotFound />;
   }
-  return <Layout bookClubData={bookClubData} tab={1} />;
+  return (
+    <Layout
+      bookClubData={bookClubData}
+      tab={bookClubData.currentBookId ? 1 : 0}
+    />
+  );
 };
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {

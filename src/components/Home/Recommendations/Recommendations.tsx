@@ -36,7 +36,6 @@ const Recommendations: React.FC<RecommendationsProps> = ({ filter }) => {
 
   const getBCRecommendations = async () => {
     setLoading(true);
-
     try {
       const bookclubQuery = query(
         collection(firestore, 'bookclubs'),
@@ -57,9 +56,21 @@ const Recommendations: React.FC<RecommendationsProps> = ({ filter }) => {
     setLoading(false);
   };
 
+  const getHottest = async () => {
+    setLoading(true);
+    try {
+    } catch (error) {
+      console.log('getHottest error', error);
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
-    getBCRecommendations();
-    console.log('filter:', filter);
+    if (filter !== 'hottestBooks') {
+      getBCRecommendations();
+    } else {
+      getHottest();
+    }
   }, []);
 
   return (
@@ -87,7 +98,9 @@ const Recommendations: React.FC<RecommendationsProps> = ({ filter }) => {
           >
             {filter == 'numberOfMembers'
               ? 'No. of Members'
-              : filter == 'numberOfBooks' && 'No. of Books Read'}
+              : filter == 'numberOfBooks'
+              ? 'No. of Books Read'
+              : 'Hottest Books of the Moment'}
           </Flex>
           <Flex direction="column">
             {loading ? (

@@ -3,10 +3,12 @@ import { atom } from "recoil";
 
 export interface Book {
     id?: string,
-    authors: string[],
+    author: string,
+    author2?: string,
     title: string,
-    publisher: string,
-    publishedDate: string,
+    edition?: number,
+    publisher?: string,
+    publishedDate?: string,
     pageCount: number,
     addedOn: Timestamp,
     imageURL?: string,
@@ -16,8 +18,8 @@ export interface Book {
     endDate?: Timestamp,
     schedule?: object[],
     numberOfActiveReaders?: number,
-    numberofReads?: number,
-    googleLink: string,
+    numberOfReads?: number,
+    googleLink?: string,
     amazonLink?: string
 
 }

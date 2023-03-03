@@ -28,10 +28,6 @@ const LeftContent: React.FC<LeftContentProps> = ({ tab, bcData }) => {
       router.push(`/bc/${bookclub}/${tabRoute}`);
     }
   };
-  //   // Could check for user to open auth modal before redirecting to submit
-  //   if (community) {
-  //     return;
-  //   }
 
   return (
     <Flex w={'100%'} border="1px solid" minH={'70vh'} borderColor="gray.300">
@@ -43,32 +39,29 @@ const LeftContent: React.FC<LeftContentProps> = ({ tab, bcData }) => {
         colorScheme="black"
       >
         <TabList>
-          <Tab onClick={() => onClick('')}>Current Book</Tab>
+          {bcData.currentBookId && (
+            <Tab onClick={() => onClick('')}>Current Book</Tab>
+          )}
           <Tab onClick={() => onClick('library')}>Library</Tab>
           <Tab onClick={() => onClick('community')}>Community</Tab>
           <Tab onClick={() => onClick('quotes')}>Quotes</Tab>
           <Tab onClick={() => onClick('poll')}>Poll</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>
-            {/* <CurrentlyReading /> */}
-            <CurrentBookTimeline />
-          </TabPanel>
+          {bcData.currentBookId && (
+            <TabPanel>
+              {/* <CurrentlyReading /> */}
+              <CurrentBookTimeline />
+            </TabPanel>
+          )}
           <TabPanel>
             <Library />
           </TabPanel>
           <TabPanel>
             <Community bcData={bcData} />
           </TabPanel>
-          <TabPanel>
-            <Community bcData={bcData} />
-          </TabPanel>
-          <TabPanel>
-            <p>two!</p>
-          </TabPanel>
-          <TabPanel>
-            <p>two!</p>
-          </TabPanel>
+          <TabPanel>{/* <Community bcData={bcData} /> */}</TabPanel>
+          <TabPanel></TabPanel>
         </TabPanels>
       </Tabs>
     </Flex>

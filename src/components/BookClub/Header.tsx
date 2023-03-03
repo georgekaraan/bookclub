@@ -9,7 +9,8 @@ import {
   useToast,
   IconButton,
   Spinner,
-  VStack
+  VStack,
+  Skeleton
 } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { BsBookFill } from 'react-icons/bs';
@@ -41,6 +42,7 @@ const Header: React.FC<HeaderProps> = ({ bcData }) => {
 
   const [memberCount, setMemberCount] = useState(bcData.numberOfMembers);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
   const toast = useToast();
 
   const { getMembers } = useBookClubData();
@@ -101,12 +103,17 @@ const Header: React.FC<HeaderProps> = ({ bcData }) => {
         <Flex width={'95%'} maxW="1500px">
           <Flex justify="center" align="center" position="relative">
             {currentBc.currentBC?.imageURL || selectedFile ? (
-              <Image
-                borderRadius="full"
-                boxSize="80px"
-                src={selectedFile || currentBc.currentBC?.imageURL}
-                alt="Dan Abramov"
-              />
+              <Skeleton rounded={'full'} isLoaded={!loading}>
+                <Image
+                  borderRadius="full"
+                  boxSize="80px"
+                  src={selectedFile || currentBc.currentBC?.imageURL}
+                  alt="Bookclub Image"
+                  onLoad={() => setImageLoading(false)}
+                  opacity={imageLoading ? 0 : 1}
+                  transition="opacity 0.2s"
+                />
+              </Skeleton>
             ) : (
               <Icon as={ImBooks} fontSize={88} color="dark" p="10px" />
             )}
@@ -150,7 +157,7 @@ const Header: React.FC<HeaderProps> = ({ bcData }) => {
           </Flex>
 
           <Flex p={'10px 16px'} align="center">
-            <Flex direction={'column'} mx={6}>
+            <Flex direction={'column'} mx={6} w="180px">
               <Text fontWeight={900} fontSize="16pt">
                 {bcData.id}
               </Text>
@@ -170,7 +177,7 @@ const Header: React.FC<HeaderProps> = ({ bcData }) => {
                 </Text>
               </Flex>
             </Flex>
-            <Flex direction={'column'} mx={6}>
+            <Flex direction={'column'} mx={6} w="150px">
               <Text fontWeight={500} fontSize="11pt">
                 No. of Members: {memberCount && memberCount}
               </Text>

@@ -55,7 +55,7 @@ const RightContent: React.FC<RightContentProps> = ({ bcData }) => {
       border={'1px solid'}
       borderColor={'gray.300'}
     >
-      <Box w={'100%'}>
+      <Box w={'100%'} minH="100px">
         <Tabs
           isFitted={true}
           size={'md'}
@@ -69,7 +69,7 @@ const RightContent: React.FC<RightContentProps> = ({ bcData }) => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <About />
+              <About bcData={bcData} />
             </TabPanel>
             <TabPanel>
               <Members

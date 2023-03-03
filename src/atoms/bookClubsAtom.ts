@@ -1,5 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 import { atom } from "recoil";
+import { Book } from "./bookAtom";
 
 export interface BookClub {
     id: string,
@@ -10,7 +11,8 @@ export interface BookClub {
     privacyType: 'public' | 'private',
     imageURL?: string,
     currentBookId?: string,
-
+    // library: Book[],
+    about: string
 }
 
 export interface BcSnippet {

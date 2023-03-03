@@ -2,6 +2,7 @@ import { auth, firestore } from '@/firebase/clientApp';
 import {
   Box,
   Button,
+  chakra,
   Checkbox,
   HStack,
   Input,
@@ -13,7 +14,8 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  Text
+  Text,
+  Textarea
 } from '@chakra-ui/react';
 import {
   collection,
@@ -41,6 +43,7 @@ const CreateBookClub: React.FC<CreateBookClubProps> = ({
   const [bcType, setBcType] = useState('private');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [about, setAbout] = useState('');
   const [user] = useAuthState(auth);
 
   useEffect(() => {
@@ -103,7 +106,8 @@ const CreateBookClub: React.FC<CreateBookClubProps> = ({
           createdAt: serverTimestamp(),
           numberOfMembers: 1,
           numberOfBooks: 0,
-          privacyType: bcType
+          privacyType: bcType,
+          about: about
         });
 
         transaction.set(
@@ -187,6 +191,14 @@ const CreateBookClub: React.FC<CreateBookClubProps> = ({
                 </HStack>
               </Checkbox>
             </Stack>
+            <Text mt={3} fontWeight={600} fontSize={14}>
+              About <chakra.span fontWeight="normal">(optional)</chakra.span>
+            </Text>
+            <Textarea
+              onChange={(e) => setAbout(e.target.value)}
+              noOfLines={2}
+              maxH="100px"
+            />
           </ModalBody>
         </Box>
 

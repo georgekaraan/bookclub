@@ -2,6 +2,7 @@ import { authModalState } from '@/atoms/authModalAtom';
 import { BookClub, bookClubState } from '@/atoms/bookClubsAtom';
 import EntriesLoader from '@/components/BookClub/LeftContent/Community/Entries/EntriesLoader';
 import Recommendations from '@/components/Home/Recommendations/Recommendations';
+import User from '@/components/Home/User/User';
 import Visitor from '@/components/Home/Visitor/Visitor';
 import { auth } from '@/firebase/clientApp';
 import useBookClubData from '@/hooks/useBookClubData';
@@ -85,12 +86,7 @@ const HomePage: React.FC<HomePageProps> = () => {
       ) : loadingUser ? (
         <EntriesLoader />
       ) : (
-        <>
-          <Flex justify="center" gap="10" my={10}>
-            <Recommendations filter={'numberOfBooks'} />
-            <Recommendations filter={'numberOfMembers'} />
-          </Flex>
-        </>
+        <User />
       )}
       {/* {user ? (
         loading ? (
